@@ -1,5 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/crop_selector_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +30,11 @@ class App extends StatelessWidget {
               maxHeight: double.infinity,
             ),
           ),
+          BlocProvider(
+            create: (BuildContext context) => UploadBloc(
+              UplaodService(),
+            ),
+          ),
         ],
         child: const HomePage(),
       ),
@@ -47,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: CropSelectorComponent(),
+        child: UploadFileComponent(),
       ),
     );
   }
