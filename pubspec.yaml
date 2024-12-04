@@ -43,6 +43,7 @@ dependencies:
   cross_file: ^0.3.4+2
   path_provider: ^2.1.5
   crypto: ^3.0.6
+  video_player: ^2.9.2
 
 dev_dependencies:
   flutter_test:

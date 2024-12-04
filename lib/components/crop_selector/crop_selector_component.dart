@@ -8,7 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CropSelectorComponent extends StatefulWidget {
-  const CropSelectorComponent({super.key});
+  final Widget Function(BuildContext) child;
+  final double maxWidth;
+  final double maxHeight;
+
+  const CropSelectorComponent({
+    required this.child,
+    required this.maxWidth,
+    required this.maxHeight,
+    super.key,
+  });
 
   @override
   State<CropSelectorComponent> createState() => _CropSelectorComponentState();
@@ -20,8 +29,12 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
     return BlocBuilder<CropSelectorBloc, CropSelectorState>(
       builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
-          final adjustedMaxWidth = constraints.maxWidth;
-          final adjustedMaxHeight = constraints.maxHeight;
+          final adjustedMaxWidth = widget.maxWidth > constraints.maxWidth
+              ? constraints.maxWidth
+              : widget.maxWidth;
+          final adjustedMaxHeight = widget.maxHeight > constraints.maxHeight
+              ? constraints.maxHeight
+              : widget.maxHeight;
 
           context.read<CropSelectorBloc>().add(
                 UpdateConstraintsEvent(
@@ -33,9 +46,10 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
           return Stack(
             children: [
               Container(
-                color: Colors.black26,
-                width: double.infinity,
-                height: double.infinity,
+                color: Colors.black,
+                child: Builder(
+                  builder: widget.child,
+                ),
               ),
               Positioned(
                 left: state.cropX,

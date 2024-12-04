@@ -31,4 +31,9 @@ class FileManager {
 
     return '$hash.$extension';
   }
+
+  static Future<String> getFilePath(String fileName) async {
+    final Directory workingDir = await getWorkingDirectory();
+    return '${workingDir.path}/$fileName';
+  }
 }

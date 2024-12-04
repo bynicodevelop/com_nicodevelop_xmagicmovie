@@ -17,7 +17,7 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
     this._uplaodService,
   ) : super(const UploadState([])) {
     on<UploadFileEvent>((event, emit) async {
-      final List<FileModel> filesName = await Future.wait(
+      final List<FileModel> files = await Future.wait(
         event.files.map((file) async {
           final String uniqueFileName =
               await FileManager.generateUniqueFileName(file);
@@ -37,10 +37,14 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
       );
 
       await Future.wait(
-        filesName.map((file) async {
+        files.map((file) async {
           await _uplaodService.moveFile(file);
         }),
       );
+
+      emit(UploadState(
+        files,
+      ));
     });
   }
 }
