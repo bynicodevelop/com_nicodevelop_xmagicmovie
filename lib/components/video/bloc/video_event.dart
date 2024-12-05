@@ -16,12 +16,6 @@ class InitializeVideo extends VideoEvent {
   List<Object> get props => [file];
 }
 
-// class PlayVideo extends VideoEvent {}
-
-// class PauseVideo extends VideoEvent {}
-
-// class DisposeVideo extends VideoEvent {}
-
 class UpdateConstraintsEvent extends VideoEvent {
   final double maxWidth;
   final double maxHeight;

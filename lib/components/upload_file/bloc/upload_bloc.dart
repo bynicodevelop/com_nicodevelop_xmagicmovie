@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/models/file_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:equatable/equatable.dart';
@@ -17,7 +17,7 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
     this._uplaodService,
   ) : super(const UploadState([])) {
     on<UploadFileEvent>((event, emit) async {
-      final List<FileModel> files = await Future.wait(
+      final List<VideoDataModel> files = await Future.wait(
         event.files.map((file) async {
           final String uniqueFileName =
               await FileManager.generateUniqueFileName(file);
@@ -27,7 +27,7 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
 
           await file.saveTo(filePath);
 
-          return FileModel(
+          return VideoDataModel(
             name: file.name,
             path: filePath,
             uniqueFileName: uniqueFileName,

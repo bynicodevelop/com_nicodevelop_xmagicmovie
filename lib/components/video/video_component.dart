@@ -1,7 +1,6 @@
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/crop_selector_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';

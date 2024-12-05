@@ -1,8 +1,8 @@
-import 'package:com_nicodevelop_xmagicmovie/models/file_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 
 class UplaodService {
   Future<void> moveFile(
-    FileModel file,
+    VideoDataModel file,
   ) async =>
       file.xfile.saveTo(file.path);
 }

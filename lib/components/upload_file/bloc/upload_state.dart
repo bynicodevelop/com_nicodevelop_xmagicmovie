@@ -1,7 +1,7 @@
 part of 'upload_bloc.dart';
 
 class UploadState extends Equatable {
-  final List<FileModel> files;
+  final List<VideoDataModel> files;
 
   const UploadState(
     this.files,
