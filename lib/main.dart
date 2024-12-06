@@ -1,4 +1,5 @@
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/run_button/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
@@ -58,6 +59,9 @@ class App extends StatelessWidget {
               ..add(
                 OnPlayerToolEvent(),
               ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => RunBloc(),
           ),
         ],
         child: const HomePage(),

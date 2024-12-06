@@ -23,6 +23,7 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
 
     FileManager.getFilePath('f9186b9df6a1d0305b0d05610a8f53ef.mp4')
         .then((path) {
+      context.read<UploadBloc>().add(UploadFileEvent([XFile(path)]));
       context.read<VideoBloc>().add(InitializeVideo(XFile(path)));
     });
   }

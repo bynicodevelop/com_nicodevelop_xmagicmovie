@@ -1,6 +1,7 @@
 part of 'video_bloc.dart';
 
 class VideoState extends Equatable {
+  final VideoDataModel? videoData;
   final VideoPlayerController? controller;
   final bool isInitialized;
   final bool isPlaying;
@@ -8,6 +9,7 @@ class VideoState extends Equatable {
   final double maxHeight;
 
   const VideoState(
+    this.videoData,
     this.controller,
     this.isInitialized,
     this.isPlaying,
@@ -16,6 +18,7 @@ class VideoState extends Equatable {
   );
 
   VideoState copyWith({
+    VideoDataModel? videoData,
     VideoPlayerController? controller,
     bool? isInitialized,
     bool? isPlaying,
@@ -23,6 +26,7 @@ class VideoState extends Equatable {
     double? maxHeight,
   }) {
     return VideoState(
+      videoData ?? this.videoData,
       controller ?? this.controller,
       isInitialized ?? this.isInitialized,
       isPlaying ?? this.isPlaying,
@@ -41,5 +45,5 @@ class VideoState extends Equatable {
 }
 
 final class PlayerInitial extends VideoState {
-  const PlayerInitial() : super(null, false, false, 0, 0);
+  const PlayerInitial() : super(null, null, false, false, 0, 0);
 }

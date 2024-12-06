@@ -18,6 +18,9 @@ const String kDefaultView = kUploadView;
 const String kPlayerTool = 'PlayerTool';
 const String kCropTool = 'CropTool';
 
+/// Gestion du style
+const double kDefaultPadding = 8.0;
+
 Map<String, Widget> kListView = {
   kUploadView: Scaffold(
     appBar: AppBar(
@@ -48,27 +51,29 @@ Map<String, Widget> kListView = {
     ),
   ),
   kCropSelectorView: Scaffold(
+    appBar: AppBar(
+      actions: const [
+        ToolComponent(),
+      ],
+    ),
     body: BlocBuilder<VideoBloc, VideoState>(
       builder: (context, state) {
         if (!state.isInitialized || state.controller == null) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final double maxWidth =
-                constraints.maxWidth > 0 ? constraints.maxWidth : 300;
-            final double aspectRatio = state.controller!.value.aspectRatio;
+        final VideoPlayerController controller = state.controller!;
+        final double aspectRatio = controller.value.aspectRatio;
 
-            // return AspectRatio(
-            //   aspectRatio: aspectRatio,
-            //   child: CropSelectorComponent(
-            //     child: (context) => const Text(""),
-            //   ),
-            // );
-
-            return const Text("");
-          },
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            VideoComponent(
+              controller: controller,
+              aspectRatio: aspectRatio,
+            ),
+          ],
         );
       },
     ),
