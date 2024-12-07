@@ -19,7 +19,20 @@ class RunButtonComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RunBloc, RunState>(
+    return BlocConsumer<RunBloc, RunState>(
+      listener: (context, state) {
+        if (state is RunSuccess) {
+          // create snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('La vidéo est prête !'),
+              duration: Duration(
+                seconds: 2,
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         final bool isLoading = state is RunInProgress;
 
