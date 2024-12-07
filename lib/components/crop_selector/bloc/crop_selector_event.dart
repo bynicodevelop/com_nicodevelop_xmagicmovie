@@ -42,5 +42,7 @@ class SetAspectRatio extends CropSelectorEvent {
   );
 
   @override
-  List<Object> get props => [aspectRatio,];
+  List<Object> get props => [
+        aspectRatio,
+      ];
 }

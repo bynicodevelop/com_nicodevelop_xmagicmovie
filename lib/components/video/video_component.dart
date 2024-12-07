@@ -81,8 +81,8 @@ class _VideoComponentState extends State<VideoComponent> {
                       maxHeight: constraintsData.maxHeight,
                     ),
                     child: CropSelectorComponent(
-                      maxWidth: constraintsData.maxWidth,
-                      maxHeight: constraintsData.maxHeight,
+                      maxWidth: videoState.maxWidth,
+                      maxHeight: videoState.maxHeight,
                       child: (context) => AspectRatio(
                         aspectRatio: widget.aspectRatio,
                         child: VideoPlayer(widget.controller),
