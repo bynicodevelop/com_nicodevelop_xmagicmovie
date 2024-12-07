@@ -4,8 +4,10 @@ import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_s
 import 'package:com_nicodevelop_xmagicmovie/widgets/aspect_ratio_button_widget.dart';
 
 void main() {
-  testWidgets('AspectRationButtonWidget displays correct icon and color when aspect ratio is not locked', (WidgetTester tester) async {
-    final CropSelectorState state = CropSelectorState(lockedAspectRatio: 1.0);
+  testWidgets(
+      'AspectRationButtonWidget displays correct icon and color when aspect ratio is not locked',
+      (WidgetTester tester) async {
+    const CropSelectorState state = CropSelectorState(lockedAspectRatio: 1.0);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -27,8 +29,10 @@ void main() {
     expect(iconWidget.color, Colors.white);
   });
 
-  testWidgets('AspectRationButtonWidget displays correct icon and color when aspect ratio is locked', (WidgetTester tester) async {
-    final CropSelectorState state = CropSelectorState(lockedAspectRatio: 1.5);
+  testWidgets(
+      'AspectRationButtonWidget displays correct icon and color when aspect ratio is locked',
+      (WidgetTester tester) async {
+    const CropSelectorState state = CropSelectorState(lockedAspectRatio: 1.5);
 
     await tester.pumpWidget(
       MaterialApp(
@@ -50,9 +54,11 @@ void main() {
     expect(iconWidget.color, Colors.white.withOpacity(0.5));
   });
 
-  testWidgets('AspectRationButtonWidget triggers onPressed callback when pressed', (WidgetTester tester) async {
+  testWidgets(
+      'AspectRationButtonWidget triggers onPressed callback when pressed',
+      (WidgetTester tester) async {
     bool pressed = false;
-    final CropSelectorState state = CropSelectorState(lockedAspectRatio: 1.0);
+    const CropSelectorState state = CropSelectorState(lockedAspectRatio: 1.0);
 
     await tester.pumpWidget(
       MaterialApp(

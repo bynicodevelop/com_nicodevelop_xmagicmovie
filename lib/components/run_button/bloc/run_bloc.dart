@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
-import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,11 @@ part 'run_event.dart';
 part 'run_state.dart';
 
 class RunBloc extends Bloc<RunEvent, RunState> {
-  RunBloc() : super(RunInitial()) {
+  final VideoManager _videoManager;
+
+  RunBloc(
+    this._videoManager,
+  ) : super(RunInitial()) {
     on<OnRunEvent>(_runEvent);
     on<OnRunInProgress>(_onRunInProgress);
     on<OnRunSuccess>(_onRunSuccess);
@@ -76,7 +80,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       crop: event.crop,
     ));
 
-    await FileManager.cropVideo(
+    await _videoManager.cropVideo(
       event.file,
       event.fileSize,
       event.finalCrop,

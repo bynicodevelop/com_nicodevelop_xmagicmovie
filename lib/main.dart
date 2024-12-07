@@ -6,16 +6,34 @@ import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dar
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/view_manager_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
+import 'package:com_nicodevelop_xmagicmovie/injector.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
-  runApp(const App());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupLocator();
+
+  final VideoManager videoManager = getIt.get<VideoManager>();
+  final UplaodService uplaodService = getIt.get<UplaodService>();
+
+  runApp(App(
+    videoManager: videoManager,
+    uplaodService: uplaodService,
+  ));
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  final VideoManager videoManager;
+  final UplaodService uplaodService;
+
+  const App({
+    required this.videoManager,
+    required this.uplaodService,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +58,8 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (BuildContext context) => UploadBloc(
-              UplaodService(),
+              uplaodService,
+              videoManager,
             ),
           ),
           BlocProvider(
@@ -61,7 +80,9 @@ class App extends StatelessWidget {
               ),
           ),
           BlocProvider(
-            create: (BuildContext context) => RunBloc(),
+            create: (BuildContext context) => RunBloc(
+              videoManager,
+            ),
           ),
         ],
         child: const HomePage(),
