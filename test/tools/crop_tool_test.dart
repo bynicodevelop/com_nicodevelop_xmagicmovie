@@ -153,6 +153,29 @@ void main() {
     cropTool.resizeCropArea(event, emit, state);
   });
 
+  test('resizeCropArea does not shrink width below minCropWidth', () {
+    final cropTool = CropTool();
+    final event = MockResizeCropAreaEvent(widthDelta: -100, heightDelta: 0);
+    final state = MockResizeCropAreaState(
+      cropX: 50,
+      cropY: 50,
+      cropWidth: 100,
+      cropHeight: 100,
+      minCropWidth: 80,
+      minCropHeight: 50,
+      maxWidth: 200,
+      maxHeight: 200,
+    );
+
+    emit(newState) {
+      expect(newState.cropWidth,
+          80); // Vérifie que la largeur ne descend pas sous 80
+      expect(newState.cropHeight, 100);
+    }
+
+    cropTool.resizeCropArea(event, emit, state);
+  });
+
   test('setAspectRation updates state with new aspect ratio', () {
     final cropTool = CropTool();
     final event = MockSetAspectRatioEvent(aspectRatio: 1.5);
