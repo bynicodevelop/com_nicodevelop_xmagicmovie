@@ -199,6 +199,52 @@ void main() {
     cropTool.resizeCropArea(event, emit, state);
   });
 
+  test('resizeCropArea does not expand beyond maxWidth and maxHeight', () {
+    final cropTool = CropTool();
+    final event = MockResizeCropAreaEvent(widthDelta: 200, heightDelta: 200);
+    final state = MockResizeCropAreaState(
+      cropX: 50,
+      cropY: 50,
+      cropWidth: 100,
+      cropHeight: 100,
+      minCropWidth: 50,
+      minCropHeight: 50,
+      maxWidth: 200,
+      maxHeight: 200,
+    );
+
+    emit(newState) {
+      expect(newState.cropWidth, 150); // 200 - 50 (cropX) = 150
+      expect(newState.cropHeight, 150); // 200 - 50 (cropY) = 150
+    }
+
+    cropTool.resizeCropArea(event, emit, state);
+  });
+
+  test('resizeCropArea maintains locked aspect ratio', () {
+    final cropTool = CropTool();
+    final event = MockResizeCropAreaEvent(widthDelta: 50, heightDelta: 0);
+    final state = MockResizeCropAreaState(
+      cropX: 50,
+      cropY: 50,
+      cropWidth: 100,
+      cropHeight: 100,
+      minCropWidth: 50,
+      minCropHeight: 50,
+      maxWidth: 200,
+      maxHeight: 200,
+      lockedAspectRatio: 1.5,
+    );
+
+    emit(newState) {
+      expect(newState.cropWidth, 150); // 100 + 50
+      expect(newState.cropHeight,
+          100); // Maintient le ratio 1.5 (hauteur ajustée en conséquence)
+    }
+
+    cropTool.resizeCropArea(event, emit, state);
+  });
+
   test('setAspectRation updates state with new aspect ratio', () {
     final cropTool = CropTool();
     final event = MockSetAspectRatioEvent(aspectRatio: 1.5);
