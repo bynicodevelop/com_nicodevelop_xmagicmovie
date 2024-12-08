@@ -41,15 +41,42 @@ Map<String, Widget> kListView = {
 
       final VideoPlayerController controller = state.controller!;
       final double aspectRatio = controller.value.aspectRatio;
+      final bool isPlaying = state.isPlaying;
 
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      return Column(
         children: [
-          VideoComponent(
-            controller: controller,
-            aspectRatio: aspectRatio,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              VideoComponent(
+                controller: controller,
+                aspectRatio: aspectRatio,
+              ),
+            ],
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: kDefaultPadding,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.read<VideoBloc>().add(
+                          !isPlaying
+                              ? const OnPlayEvent()
+                              : const OnPauseEvent(),
+                        );
+                  },
+                  icon: Icon(
+                    !isPlaying ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       );
     },

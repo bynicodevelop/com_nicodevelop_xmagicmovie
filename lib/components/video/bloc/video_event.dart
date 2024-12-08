@@ -28,3 +28,11 @@ class UpdateConstraintsEvent extends VideoEvent {
   @override
   List<Object> get props => [maxWidth, maxHeight];
 }
+
+class OnPlayEvent extends VideoEvent {
+  const OnPlayEvent();
+}
+
+class OnPauseEvent extends VideoEvent {
+  const OnPauseEvent();
+}
