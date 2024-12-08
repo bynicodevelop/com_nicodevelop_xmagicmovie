@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:flutter/material.dart';
 
 class VideoManager {
-  final Directory workingDir;
+  final FileManager fileManager;
 
   const VideoManager({
-    required this.workingDir,
+    required this.fileManager,
   });
 
   Future<SizeModel> getVideoSize(XFile file) async {
@@ -45,6 +46,7 @@ class VideoManager {
     SizeModel videoSize,
     CropModel crop,
   ) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
     final String inputPath = file.path;
 
     // Définir un chemin pour le fichier de sortie

@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:equatable/equatable.dart';
@@ -8,28 +10,42 @@ part 'upload_event.dart';
 part 'upload_state.dart';
 
 class UploadBloc extends Bloc<UploadEvent, UploadState> {
-  final UploadService _uploadService;
+  final UploadService uploadService;
+  final ConfigService configService;
 
   UploadBloc(
-    this._uploadService,
+    this.uploadService,
+    this.configService,
   ) : super(const UploadInitial([])) {
     on<UploadFileEvent>(_uploadFile);
   }
 
   Future<void> _uploadFile(event, emit) async {
-    try {
-      emit(const UploadInProgress());
+    // try {
+    emit(const UploadInProgress());
 
-      final List<VideoDataModel> files = await Future.wait(
-        event.files.map<Future<VideoDataModel>>(
-            (file) => _uploadService.processFile(XFile(file.path))),
-      );
+    final List<VideoDataModel> files = await Future.wait(
+      event.files.map<Future<VideoDataModel>>((file) async {
+        final VideoDataModel videoDataModel =
+            await uploadService.processFile(XFile(file.path));
 
-      await Future.wait(files.map((file) => _uploadService.moveFile(file)));
+        await configService.saveConfig(ConfigModel(
+          projectId: videoDataModel.projectId,
+        ));
 
-      emit(UploadSuccess(files));
-    } catch (e) {
-      emit(UploadFailure(e.toString()));
-    }
+        return videoDataModel;
+      }),
+    );
+
+    await Future.wait(
+      files.map(
+        (file) => uploadService.moveFile(file),
+      ),
+    );
+
+    emit(UploadSuccess(files));
+    // } catch (e) {
+    //   emit(UploadFailure(e.toString()));
+    // }
   }
 }

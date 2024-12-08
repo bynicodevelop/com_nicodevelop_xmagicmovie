@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
@@ -10,10 +9,12 @@ final GetIt getIt = GetIt.instance;
 Future<void> setupLocator() async {
   final FileManager fileManager = FileManager();
 
-  final Directory workingDir = await fileManager.getWorkingDirectory();
+  final ConfigService configService = ConfigService(
+    fileManager: fileManager,
+  );
 
   final VideoManager videoManager = VideoManager(
-    workingDir: workingDir,
+    fileManager: fileManager,
   );
 
   getIt.registerSingleton<VideoManager>(
@@ -25,5 +26,9 @@ Future<void> setupLocator() async {
       videoManager: videoManager,
       fileManager: fileManager,
     ),
+  );
+
+  getIt.registerSingleton<ConfigService>(
+    configService,
   );
 }

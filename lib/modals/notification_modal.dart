@@ -42,8 +42,6 @@ class NotificationModal extends StatelessWidget {
 
         final ModalType type = state.type;
 
-        print(state);
-
         return Container(
           padding: const EdgeInsets.all(kDefaultPadding * 2),
           decoration: BoxDecoration(

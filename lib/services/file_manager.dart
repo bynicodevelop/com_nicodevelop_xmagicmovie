@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
@@ -40,5 +41,15 @@ class FileManager {
   Future<String> getFilePath(String fileName) async {
     final Directory workingDir = await getWorkingDirectory();
     return '${workingDir.path}/$fileName';
+  }
+
+  Future<void> saveJsonFile(
+    String path,
+    String fileName,
+    Map<String, dynamic> data,
+  ) async {
+    final File file = File('$path/$fileName');
+    final String jsonString = jsonEncode(data);
+    await file.writeAsString(jsonString, flush: true);
   }
 }

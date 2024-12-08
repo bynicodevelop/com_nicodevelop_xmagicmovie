@@ -10,6 +10,7 @@ import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
 import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/modals/notification_modal.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/crop_tool.dart';
@@ -22,20 +23,24 @@ Future<void> main() async {
 
   final VideoManager videoManager = getIt.get<VideoManager>();
   final UploadService uplaodService = getIt.get<UploadService>();
+  final ConfigService configService = getIt.get<ConfigService>();
 
   runApp(App(
     videoManager: videoManager,
     uplaodService: uplaodService,
+    configService: configService,
   ));
 }
 
 class App extends StatelessWidget {
   final VideoManager videoManager;
   final UploadService uplaodService;
+  final ConfigService configService;
 
   const App({
     required this.videoManager,
     required this.uplaodService,
+    required this.configService,
     super.key,
   });
 
@@ -69,6 +74,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => UploadBloc(
               uplaodService,
+              configService,
             ),
           ),
           BlocProvider(
