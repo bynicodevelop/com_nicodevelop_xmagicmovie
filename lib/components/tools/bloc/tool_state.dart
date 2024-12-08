@@ -4,13 +4,13 @@ sealed class ToolState extends Equatable {
   final String toolName;
   final bool isPlayerTool;
   final bool isCropTool;
-  final bool hasActiveTool;
+  final bool canRun;
 
   const ToolState(
     this.toolName,
     this.isPlayerTool,
     this.isCropTool, {
-    this.hasActiveTool = false,
+    this.canRun = false,
   });
 
   @override
@@ -18,37 +18,15 @@ sealed class ToolState extends Equatable {
         toolName,
         isPlayerTool,
         isCropTool,
-        hasActiveTool,
+        canRun,
       ];
 }
 
 final class ToolInitial extends ToolState {
-  @override
-  final String toolName;
-  @override
-  final bool isPlayerTool;
-  @override
-  final bool isCropTool;
-  @override
-  final bool hasActiveTool;
-
   const ToolInitial(
-    this.toolName,
-    this.isPlayerTool,
-    this.isCropTool, {
-    this.hasActiveTool = false,
-  }) : super(
-          toolName,
-          isPlayerTool,
-          isCropTool,
-          hasActiveTool: false,
-        );
-
-  @override
-  List<Object> get props => [
-        toolName,
-        isPlayerTool,
-        isCropTool,
-        hasActiveTool,
-      ];
+    super.toolName,
+    super.isPlayerTool,
+    super.isCropTool, {
+    super.canRun = false,
+  });
 }

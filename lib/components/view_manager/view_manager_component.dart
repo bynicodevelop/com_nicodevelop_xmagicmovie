@@ -1,3 +1,4 @@
+import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
@@ -40,6 +41,10 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
                     InitializeVideo(
                       state.files.first.xfile,
                     ),
+                  );
+
+              context.read<ToolBloc>().add(
+                    OnPlayerToolEvent(),
                   );
 
               context.read<ViewManagerBloc>().add(

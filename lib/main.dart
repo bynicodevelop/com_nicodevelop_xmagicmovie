@@ -14,6 +14,7 @@ import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/crop_tool.dart';
+import 'package:com_nicodevelop_xmagicmovie/tools/tool.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,8 +90,9 @@ class App extends StatelessWidget {
             create: (BuildContext context) => VideoBloc(),
           ),
           BlocProvider(
-            create: (BuildContext context) => ToolBloc()
-              ..add(
+            create: (BuildContext context) => ToolBloc(
+              Tool(),
+            )..add(
                 OnPlayerToolEvent(),
               ),
           ),
