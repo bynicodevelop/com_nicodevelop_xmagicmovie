@@ -3,6 +3,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_s
 import 'package:com_nicodevelop_xmagicmovie/components/run_button/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:cross_file/cross_file.dart';
@@ -22,15 +23,12 @@ class RunButtonComponent extends StatelessWidget {
     return BlocConsumer<RunBloc, RunState>(
       listener: (context, state) {
         if (state is RunSuccess) {
-          // create snackbar
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('La vidéo est prête !'),
-              duration: Duration(
-                seconds: 2,
-              ),
-            ),
-          );
+          context.read<ModalBloc>().add(
+                const OnOpenModal(
+                  title: "C'est prêt ! 🎉",
+                  message: "Votre vidéo a été traitée avec succès.",
+                ),
+              );
         }
       },
       builder: (context, state) {

@@ -7,6 +7,8 @@ import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_ma
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/view_manager_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
+import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/modals/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/crop_tool.dart';
@@ -49,6 +51,11 @@ class App extends StatelessWidget {
       ),
       home: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (BuildContext context) => ModalBloc(
+              closeDuration: kDefaultCloseDuration,
+            ),
+          ),
           BlocProvider<CropSelectorBloc>(
             create: (BuildContext context) => CropSelectorBloc(
               CropTool(),
@@ -103,8 +110,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ViewManagerComponent(),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          const ViewManagerComponent(),
+          Positioned(
+            bottom: 50,
+            right: 50,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              child: const NotificationModal(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

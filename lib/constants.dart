@@ -21,6 +21,9 @@ const String kCropTool = 'CropTool';
 /// Gestion du style
 const double kDefaultPadding = 8.0;
 
+/// Modal
+const int kDefaultCloseDuration = 5;
+
 Map<String, Widget> kListView = {
   kUploadView: Scaffold(
     appBar: AppBar(
