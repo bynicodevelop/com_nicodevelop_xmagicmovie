@@ -1,4 +1,4 @@
-import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
 import 'package:flutter/material.dart';
@@ -25,60 +25,33 @@ const double kDefaultPadding = 8.0;
 const int kDefaultCloseDuration = 5;
 
 Map<String, Widget> kListView = {
-  kUploadView: Scaffold(
-    appBar: AppBar(
-      actions: const [
-        ToolComponent(),
-      ],
-    ),
-    body: BlocBuilder<VideoBloc, VideoState>(
-      builder: (context, state) {
-        if (!state.isInitialized || state.controller == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final VideoPlayerController controller = state.controller!;
-        final double aspectRatio = controller.value.aspectRatio;
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            VideoComponent(
-              controller: controller,
-              aspectRatio: aspectRatio,
-            ),
-          ],
-        );
-      },
+  kUploadView: const SingleChildScrollView(
+    child: Padding(
+      padding: EdgeInsets.all(
+        kDefaultPadding * 3,
+      ),
+      child: UploadFileComponent(),
     ),
   ),
-  kCropSelectorView: Scaffold(
-    appBar: AppBar(
-      actions: const [
-        ToolComponent(),
-      ],
-    ),
-    body: BlocBuilder<VideoBloc, VideoState>(
-      builder: (context, state) {
-        if (!state.isInitialized || state.controller == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
+  kCropSelectorView: BlocBuilder<VideoBloc, VideoState>(
+    builder: (context, state) {
+      if (!state.isInitialized || state.controller == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-        final VideoPlayerController controller = state.controller!;
-        final double aspectRatio = controller.value.aspectRatio;
+      final VideoPlayerController controller = state.controller!;
+      final double aspectRatio = controller.value.aspectRatio;
 
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            VideoComponent(
-              controller: controller,
-              aspectRatio: aspectRatio,
-            ),
-          ],
-        );
-      },
-    ),
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          VideoComponent(
+            controller: controller,
+            aspectRatio: aspectRatio,
+          ),
+        ],
+      );
+    },
   ),
 };

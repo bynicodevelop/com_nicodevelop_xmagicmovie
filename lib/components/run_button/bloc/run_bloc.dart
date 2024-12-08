@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:equatable/equatable.dart';
@@ -37,7 +38,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       throw Exception('File size width or height (Base) cannot be zero.');
     }
 
-    final XFile file = event.file;
+    final VideoDataModel file = event.file;
 
     // Calculer les ratios d'échelle entre la vidéo UX et la vidéo réelle
     final double scaleX = event.fileSize.width / event.videoSize.width;

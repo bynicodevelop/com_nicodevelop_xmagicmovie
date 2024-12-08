@@ -1,7 +1,7 @@
 part of 'run_bloc.dart';
 
 class RunEvent extends Equatable {
-  final XFile file;
+  final VideoDataModel file;
   final SizeModel fileSize;
   final SizeModel videoSize;
   final CropModel crop;

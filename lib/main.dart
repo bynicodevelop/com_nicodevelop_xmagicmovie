@@ -1,6 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/run_button/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
@@ -20,7 +21,7 @@ Future<void> main() async {
   await setupLocator();
 
   final VideoManager videoManager = getIt.get<VideoManager>();
-  final UplaodService uplaodService = getIt.get<UplaodService>();
+  final UploadService uplaodService = getIt.get<UploadService>();
 
   runApp(App(
     videoManager: videoManager,
@@ -30,7 +31,7 @@ Future<void> main() async {
 
 class App extends StatelessWidget {
   final VideoManager videoManager;
-  final UplaodService uplaodService;
+  final UploadService uplaodService;
 
   const App({
     required this.videoManager,
@@ -68,7 +69,6 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => UploadBloc(
               uplaodService,
-              videoManager,
             ),
           ),
           BlocProvider(
@@ -111,8 +111,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: const [
+          ToolComponent(),
+        ],
+      ),
       body: Stack(
-        children: <Widget>[
+        children: [
           const ViewManagerComponent(),
           Positioned(
             bottom: 50,

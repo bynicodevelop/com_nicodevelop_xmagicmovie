@@ -16,31 +16,33 @@ class _UploadFileComponentState extends State<UploadFileComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UploadBloc, UploadState>(builder: (context, state) {
-      return DropTarget(
-        onDragEntered: (event) => setState(() => _isHovering = true),
-        onDragExited: (details) => setState(() => _isHovering = false),
-        onDragDone: (details) {
-          context.read<UploadBloc>().add(
-                UploadFileEvent(details.files),
-              );
+    return BlocBuilder<UploadBloc, UploadState>(
+      builder: (context, state) {
+        return DropTarget(
+          onDragEntered: (event) => setState(() => _isHovering = true),
+          onDragExited: (details) => setState(() => _isHovering = false),
+          onDragDone: (details) {
+            context.read<UploadBloc>().add(
+                  UploadFileEvent(details.files),
+                );
 
-          setState(() => _isHovering = false);
-        },
-        child: DottedBorder(
-          color: _isHovering ? Colors.blue.shade900 : Colors.grey.shade300,
-          strokeWidth: 2,
-          dashPattern: const [5, 5],
-          radius: const Radius.circular(12),
-          borderType: BorderType.RRect,
-          child: const SizedBox(
-            height: 200,
-            child: Center(
-              child: Text("Drag and drop files here"),
+            setState(() => _isHovering = false);
+          },
+          child: DottedBorder(
+            color: _isHovering ? Colors.blue.shade900 : Colors.grey.shade300,
+            strokeWidth: 2,
+            dashPattern: const [5, 5],
+            radius: const Radius.circular(12),
+            borderType: BorderType.RRect,
+            child: const SizedBox(
+              height: 200,
+              child: Center(
+                child: Text("Déposer un fichier ici"),
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

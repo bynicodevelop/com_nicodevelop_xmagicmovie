@@ -6,6 +6,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dar
 import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,8 +44,8 @@ class RunButtonComponent extends StatelessWidget {
                   final CropSelectorState cropState =
                       context.read<CropSelectorBloc>().state;
 
-                  final XFile file = uplaodState.files[0].xfile;
-                  final SizeModel fileSize = uplaodState.files[0].size;
+                  final VideoDataModel file = uplaodState.files.first;
+                  final SizeModel fileSize = file.size;
                   final SizeModel videoSize = SizeModel(
                     videoState.maxWidth,
                     videoState.maxHeight,

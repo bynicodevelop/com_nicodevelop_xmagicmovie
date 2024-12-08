@@ -10,7 +10,7 @@ sealed class RunState extends Equatable {
 final class RunInitial extends RunState {}
 
 final class RunInProgress extends RunState {
-  final XFile file;
+  final VideoDataModel file;
   final SizeModel videoSize;
   final CropModel crop;
 

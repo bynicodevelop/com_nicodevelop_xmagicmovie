@@ -8,15 +8,22 @@ import 'package:get_it/get_it.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupLocator() async {
-  final Directory workingDir = await FileManager.getWorkingDirectory();
+  final FileManager fileManager = FileManager();
 
-  getIt.registerSingleton<VideoManager>(
-    VideoManager(
-      workingDir: workingDir,
-    ),
+  final Directory workingDir = await fileManager.getWorkingDirectory();
+
+  final VideoManager videoManager = VideoManager(
+    workingDir: workingDir,
   );
 
-  getIt.registerSingleton<UplaodService>(
-    UplaodService(),
+  getIt.registerSingleton<VideoManager>(
+    videoManager,
+  );
+
+  getIt.registerSingleton<UploadService>(
+    UploadService(
+      videoManager: videoManager,
+      fileManager: fileManager,
+    ),
   );
 }

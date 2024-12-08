@@ -6,7 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
-  static Future<Directory> getWorkingDirectory() async {
+  Future<Directory> getWorkingDirectory() async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
 
     final Directory workingDir = Directory(
@@ -20,20 +20,24 @@ class FileManager {
     return workingDir;
   }
 
-  static String getFileName(XFile file) {
+  String getFileName(XFile file) {
     return file.path.split('/').last;
   }
 
-  static Future<String> generateUniqueFileName(XFile file) async {
+  Future<Map<String, String>> generateUniqueFileName(XFile file) async {
     final String extension = file.path.split('.').last;
 
     final bytes = await file.readAsBytes();
     final hash = md5.convert(bytes);
 
-    return '$hash.$extension';
+    return {
+      'hash': hash.toString(),
+      'extension': extension,
+      'fileName': '$hash.$extension',
+    };
   }
 
-  static Future<String> getFilePath(String fileName) async {
+  Future<String> getFilePath(String fileName) async {
     final Directory workingDir = await getWorkingDirectory();
     return '${workingDir.path}/$fileName';
   }

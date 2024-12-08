@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:flutter/material.dart';
@@ -40,14 +41,15 @@ class VideoManager {
   }
 
   Future<void> cropVideo(
-    XFile file,
+    VideoDataModel file,
     SizeModel videoSize,
     CropModel crop,
   ) async {
     final String inputPath = file.path;
 
     // Définir un chemin pour le fichier de sortie
-    final String outputPath = '${workingDir.path}/cropped_${file.name}';
+    final String outputPath =
+        '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}';
 
     // File exists
     final File fileExists = File(outputPath);
