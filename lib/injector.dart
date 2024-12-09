@@ -17,6 +17,10 @@ Future<void> setupLocator() async {
     fileManager: fileManager,
   );
 
+  getIt.registerSingleton<FileManager>(
+    fileManager,
+  );
+
   getIt.registerSingleton<VideoManager>(
     videoManager,
   );

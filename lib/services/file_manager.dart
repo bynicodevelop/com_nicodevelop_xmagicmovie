@@ -38,9 +38,12 @@ class FileManager {
     };
   }
 
-  Future<String> getFilePath(String fileName) async {
+  Future<String> getFilePath(
+    String projectId,
+    String fileName,
+  ) async {
     final Directory workingDir = await getWorkingDirectory();
-    return '${workingDir.path}/$fileName';
+    return '${workingDir.path}/$projectId/$fileName';
   }
 
   Future<void> saveJsonFile(
@@ -51,5 +54,12 @@ class FileManager {
     final File file = File('$path/$fileName');
     final String jsonString = jsonEncode(data);
     await file.writeAsString(jsonString, flush: true);
+  }
+
+  Future<Map<String, dynamic>> readJsonFile(String path) async {
+    final File file = File(path);
+
+    final String jsonString = await file.readAsString();
+    return jsonDecode(jsonString);
   }
 }

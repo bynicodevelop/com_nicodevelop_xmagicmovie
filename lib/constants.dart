@@ -1,3 +1,4 @@
+import 'package:com_nicodevelop_xmagicmovie/components/list_projet/list_projet_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
@@ -30,7 +31,13 @@ Map<String, Widget> kListView = {
       padding: EdgeInsets.all(
         kDefaultPadding * 3,
       ),
-      child: UploadFileComponent(),
+      child: Wrap(
+        runSpacing: kDefaultPadding * 3,
+        children: [
+          UploadFileComponent(),
+          ListProjectComponent(),
+        ],
+      ),
     ),
   ),
   kCropSelectorView: BlocBuilder<VideoBloc, VideoState>(
@@ -76,7 +83,7 @@ Map<String, Widget> kListView = {
                 ),
               ],
             ),
-          )
+          ),
         ],
       );
     },

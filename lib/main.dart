@@ -1,4 +1,6 @@
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/button_project/bloc/project_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/run_button/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
@@ -11,9 +13,11 @@ import 'package:com_nicodevelop_xmagicmovie/injector.dart';
 import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/modals/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/crop_tool.dart';
+import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/tool.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,11 +26,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
 
+  final FileManager fileManager = getIt.get<FileManager>();
   final VideoManager videoManager = getIt.get<VideoManager>();
   final UploadService uplaodService = getIt.get<UploadService>();
   final ConfigService configService = getIt.get<ConfigService>();
 
   runApp(App(
+    fileManager: fileManager,
     videoManager: videoManager,
     uplaodService: uplaodService,
     configService: configService,
@@ -34,11 +40,13 @@ Future<void> main() async {
 }
 
 class App extends StatelessWidget {
+  final FileManager fileManager;
   final VideoManager videoManager;
   final UploadService uplaodService;
   final ConfigService configService;
 
   const App({
+    required this.fileManager,
     required this.videoManager,
     required this.uplaodService,
     required this.configService,
@@ -99,6 +107,16 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => RunBloc(
               videoManager,
+            ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ProjectsBloc(
+              Project(fileManager, configService),
+            )..add(const LoadProjects()),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ProjectBloc(
+              Project(fileManager, configService),
             ),
           ),
         ],

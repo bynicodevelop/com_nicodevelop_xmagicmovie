@@ -21,31 +21,32 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
   }
 
   Future<void> _uploadFile(event, emit) async {
-    // try {
-    emit(const UploadInProgress());
+    try {
+      emit(const UploadInProgress());
 
-    final List<VideoDataModel> files = await Future.wait(
-      event.files.map<Future<VideoDataModel>>((file) async {
-        final VideoDataModel videoDataModel =
-            await uploadService.processFile(XFile(file.path));
+      final List<VideoDataModel> files = await Future.wait(
+        event.files.map<Future<VideoDataModel>>((file) async {
+          final VideoDataModel videoDataModel =
+              await uploadService.processFile(XFile(file.path));
 
-        await configService.saveConfig(ConfigModel(
-          projectId: videoDataModel.projectId,
-        ));
+          await configService.saveConfig(ConfigModel(
+            projectId: videoDataModel.projectId,
+            sourceFileName: videoDataModel.uniqueFileName,
+          ));
 
-        return videoDataModel;
-      }),
-    );
+          return videoDataModel;
+        }),
+      );
 
-    await Future.wait(
-      files.map(
-        (file) => uploadService.moveFile(file),
-      ),
-    );
+      await Future.wait(
+        files.map(
+          (file) => uploadService.moveFile(file),
+        ),
+      );
 
-    emit(UploadSuccess(files));
-    // } catch (e) {
-    //   emit(UploadFailure(e.toString()));
-    // }
+      emit(UploadSuccess(files));
+    } catch (e) {
+      emit(UploadFailure(e.toString()));
+    }
   }
 }

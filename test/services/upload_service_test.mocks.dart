@@ -161,16 +161,26 @@ class MockFileManager extends _i1.Mock implements _i2.FileManager {
       ) as _i6.Future<Map<String, String>>);
 
   @override
-  _i6.Future<String> getFilePath(String? fileName) => (super.noSuchMethod(
+  _i6.Future<String> getFilePath(
+    String? projectId,
+    String? fileName,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getFilePath,
-          [fileName],
+          [
+            projectId,
+            fileName,
+          ],
         ),
         returnValue: _i6.Future<String>.value(_i10.dummyValue<String>(
           this,
           Invocation.method(
             #getFilePath,
-            [fileName],
+            [
+              projectId,
+              fileName,
+            ],
           ),
         )),
       ) as _i6.Future<String>);
@@ -193,4 +203,15 @@ class MockFileManager extends _i1.Mock implements _i2.FileManager {
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<Map<String, dynamic>> readJsonFile(String? path) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #readJsonFile,
+          [path],
+        ),
+        returnValue:
+            _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i6.Future<Map<String, dynamic>>);
 }
