@@ -15,6 +15,8 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) : super(ProjectInitial(
           XFile(''),
         )) {
-    on<ProjectEvent>((event, emit) => project.loadProject(event, emit, state));
+    on<ProjectEvent>(
+      (event, emit) async => project.loadProject(event, emit, state),
+    );
   }
 }

@@ -3,6 +3,7 @@ import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
@@ -127,4 +128,49 @@ void main() {
     expect(emittedState?.videoFile, isNull);
     verify(mockFileManager.getFilePath(mockProjectId, mockSourceFileName)).called(1);
   });
+
+  test('deleteProject emits loading state and then loaded state when deletion succeeds', () async {
+  // Arrange
+  const String mockProjectId = '123';
+  const event = OnDeleteProject(mockProjectId);
+  final initialState = MockState();
+  MockState? emittedState;
+
+  // Stub du FileManager pour simuler une suppression réussie
+  when(mockFileManager.deleteDirectory(mockProjectId)).thenAnswer((_) async => Future.value());
+
+  void emit(MockState state) {
+    emittedState = state;
+  }
+
+  // Act
+  await project.deleteProject(event, emit, initialState);
+
+  // Assert
+  expect(emittedState?.loadingState, equals(LoadingState.loaded));
+  verify(mockFileManager.deleteDirectory(mockProjectId)).called(1);
+});
+
+test('deleteProject emits loading state and then error state when deletion fails', () async {
+  // Arrange
+  const String mockProjectId = '123';
+  const event = OnDeleteProject(mockProjectId);
+  final initialState = MockState();
+  MockState? emittedState;
+
+  // Stub du FileManager pour lancer une exception
+  when(mockFileManager.deleteDirectory(mockProjectId)).thenThrow(Exception('Deletion failed'));
+
+  void emit(MockState state) {
+    emittedState = state;
+  }
+
+  // Act
+  await project.deleteProject(event, emit, initialState);
+
+  // Assert
+  expect(emittedState?.loadingState, equals(LoadingState.error));
+  verify(mockFileManager.deleteDirectory(mockProjectId)).called(1);
+});
+
 }

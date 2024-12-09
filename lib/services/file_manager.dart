@@ -62,4 +62,15 @@ class FileManager {
     final String jsonString = await file.readAsString();
     return jsonDecode(jsonString);
   }
+
+  Future<void> deleteDirectory(
+    String path,
+  ) async {
+    final Directory workingDir = await getWorkingDirectory();
+    final Directory dir = Directory('${workingDir.path}/$path');
+
+    await dir.delete(
+      recursive: true,
+    );
+  }
 }

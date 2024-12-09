@@ -22,6 +22,8 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
           [],
           LoadingState.idle,
         )) {
-    on<LoadProjects>((event, emit) => project.loadProjects(event, emit, state));
+    on<LoadProjects>(
+      (event, emit) async => project.loadProjects(event, emit, state),
+    );
   }
 }

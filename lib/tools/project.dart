@@ -50,10 +50,33 @@ class Project {
         ),
       );
     } catch (e) {
-      // Gérer l'erreur en émettant un état avec videoFile à null
       emit(
         state.copyWith(
           videoFile: null,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteProject(event, emit, state) async {
+    emit(state.copyWith(
+      loadingState: LoadingState.loading,
+    ));
+
+    try {
+      await fileManager.deleteDirectory(
+        event.projectId,
+      );
+
+      emit(
+        state.copyWith(
+          loadingState: LoadingState.loaded,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          loadingState: LoadingState.error,
         ),
       );
     }

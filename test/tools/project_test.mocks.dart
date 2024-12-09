@@ -149,6 +149,16 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
         returnValue:
             _i4.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
       ) as _i4.Future<Map<String, dynamic>>);
+
+  @override
+  _i4.Future<void> deleteDirectory(String? path) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteDirectory,
+          [path],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }
 
 /// A class which mocks [ConfigService].

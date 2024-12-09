@@ -1,3 +1,5 @@
+import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/bloc/project_delete_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/button_delete_project_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
@@ -7,7 +9,7 @@ import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ButtonProjectComponent extends StatelessWidget {
+class ButtonProjectComponent extends StatefulWidget {
   final ConfigModel config;
 
   const ButtonProjectComponent({
@@ -16,44 +18,71 @@ class ButtonProjectComponent extends StatelessWidget {
   });
 
   @override
+  State<ButtonProjectComponent> createState() => _ButtonProjectComponentState();
+}
+
+class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<ProjectBloc, ProjectState>(
-        listener: (context, state) {
-          context.read<VideoBloc>().add(
-                InitializeVideo(
-                  state.videoFile,
-                ),
-              );
+      listener: (context, state) {
+        context.read<VideoBloc>().add(
+              InitializeVideo(
+                state.videoFile,
+              ),
+            );
 
-          context.read<ToolBloc>().add(
-                OnPlayerToolEvent(),
-              );
+        context.read<ToolBloc>().add(
+              OnPlayerToolEvent(),
+            );
 
-          context.read<ViewManagerBloc>().add(
-                const ViewManagerEvent(
-                  kCropSelectorView,
-                ),
-              );
-        },
+        context.read<ViewManagerBloc>().add(
+              const ViewManagerEvent(
+                kCropSelectorView,
+              ),
+            );
+      },
+      child: MouseRegion(
+        onEnter: (event) => setState(() => _isHovered = !_isHovered),
+        onExit: (event) => setState(() => _isHovered = !_isHovered),
         child: Card(
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: () {
               context.read<ProjectBloc>().add(
                     LoadProject(
-                      config,
+                      widget.config,
                     ),
                   );
             },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.movie_rounded,
-                size: 50,
-                color: Colors.grey.shade600,
-              ),
+            child: Stack(
+              children: [
+                if (_isHovered)
+                  Positioned(
+                    top: kDefaultPadding,
+                    right: kDefaultPadding,
+                    child: ButtonDeleteProjectComponent(
+                      callback: () => context.read<ProjectDeletionBloc>().add(
+                            OnDeleteProject(
+                              widget.config.projectId,
+                            ),
+                          ),
+                    ),
+                  ),
+                Center(
+                  child: Icon(
+                    Icons.movie_rounded,
+                    size: 50,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
