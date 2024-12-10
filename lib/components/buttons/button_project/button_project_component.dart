@@ -27,9 +27,12 @@ class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
   Widget build(BuildContext context) {
     return BlocListener<ProjectBloc, ProjectState>(
       listener: (context, state) {
+        print("ButtonProjectComponent");
+        print(state.videoDataModel.toJson());
+        print(state);
         context.read<VideoBloc>().add(
               InitializeVideo(
-                state.videoFile,
+                state.videoDataModel,
               ),
             );
 

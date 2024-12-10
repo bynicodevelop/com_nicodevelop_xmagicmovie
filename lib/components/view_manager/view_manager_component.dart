@@ -4,6 +4,9 @@ import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_b
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -73,7 +76,14 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
             if (state is UploadSuccess && state.files.isNotEmpty) {
               context.read<VideoBloc>().add(
                     InitializeVideo(
-                      state.files.first.xfile,
+                      VideoDataModel(
+                        projectId: '',
+                        name: state.files.first.name,
+                        path: state.files.first.path,
+                        uniqueFileName: '',
+                        xfile: XFile(state.files.first.path),
+                        size: SizeModel(0, 0),
+                      ),
                     ),
                   );
 

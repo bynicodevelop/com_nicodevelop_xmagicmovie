@@ -29,7 +29,9 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     InitializeVideo event,
     Emitter<VideoState> emit,
   ) async {
-    final controller = VideoPlayerController.file(File(event.file.path));
+    final controller = VideoPlayerController.file(
+      File(event.videoDataModel.path),
+    );
     await controller.initialize();
     emit(PlayerInitial(
       state.videoData,

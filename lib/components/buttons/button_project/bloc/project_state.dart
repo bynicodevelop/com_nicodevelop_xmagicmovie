@@ -1,28 +1,34 @@
 part of 'project_bloc.dart';
 
 class ProjectState extends Equatable {
-  final XFile videoFile;
+  final VideoDataModel videoDataModel;
+  final DateTime lastUpdated;
 
   const ProjectState(
-    this.videoFile,
+    this.videoDataModel,
+    this.lastUpdated,
   );
 
   ProjectState copyWith({
-    XFile? videoFile,
+    VideoDataModel? videoDataModel,
+    DateTime? lastUpdated,
   }) {
     return ProjectState(
-      videoFile ?? this.videoFile,
+      videoDataModel ?? this.videoDataModel,
+      lastUpdated ?? this.lastUpdated,
     );
   }
 
   @override
   List<Object> get props => [
-        videoFile,
+        videoDataModel,
+        lastUpdated,
       ];
 }
 
 final class ProjectInitial extends ProjectState {
   const ProjectInitial(
-    super.videoFile,
+    super.videoDataModel,
+    super.lastUpdated,
   );
 }

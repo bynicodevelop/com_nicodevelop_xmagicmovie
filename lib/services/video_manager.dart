@@ -6,6 +6,7 @@ import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/statistics_callback.dart';
 import 'package:flutter/material.dart';
 
 class VideoManager {
@@ -65,6 +66,24 @@ class VideoManager {
         '-i "$inputPath" -filter:v "crop=${crop.cropWidth}:${crop.cropHeight}:${crop.cropX}:${crop.cropY}" -c:a copy "$outputPath"';
 
     try {
+      // FFmpegKit.executeAsync(
+      //   ffmpegCommand,
+      //   (session) async {
+      //     final returnCode = await session.getReturnCode();
+
+      //     if (returnCode != null && returnCode.isValueSuccess()) {
+      //       debugPrint("Video cropped successfully. Output path: $outputPath");
+      //     } else {
+      //       final String? error = await session.getOutput();
+      //       throw Exception('Failed to crop video: $error');
+      //     }
+      //   },
+      //   null,
+      //   (statistics) {
+      //     debugPrint('Statistics: $statistics');
+      //   },
+      // );
+
       final session = await FFmpegKit.execute(ffmpegCommand);
       final returnCode = await session.getReturnCode();
 

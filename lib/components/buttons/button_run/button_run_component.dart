@@ -1,8 +1,8 @@
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_state.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
@@ -37,18 +37,23 @@ class ButtonRunComponent extends StatelessWidget {
         return ElevatedButton(
           onPressed: !isLoading && hasActiveTool
               ? () {
+                  late List<VideoDataModel> videoDataModel;
+
                   final UploadState uplaodState =
                       context.read<UploadBloc>().state;
-                  final VideoState videoState = context.read<VideoBloc>().state;
+                  final VideoDataModel projectState =
+                      context.read<ProjectBloc>().state.videoDataModel;
                   final CropSelectorState cropState =
                       context.read<CropSelectorBloc>().state;
 
-                  final VideoDataModel file = uplaodState.files.first;
+                  if (uplaodState.files.isNotEmpty) {
+                    videoDataModel = uplaodState.files;
+                  } else {
+                    videoDataModel = [projectState];
+                  }
+
+                  final VideoDataModel file = videoDataModel.first;
                   final SizeModel fileSize = file.size;
-                  final SizeModel videoSize = SizeModel(
-                    videoState.maxWidth,
-                    videoState.maxHeight,
-                  );
                   final CropModel crop = CropModel(
                     cropX: cropState.cropX,
                     cropY: cropState.cropY,
@@ -57,13 +62,7 @@ class ButtonRunComponent extends StatelessWidget {
                   );
 
                   context.read<RunBloc>().add(
-                        OnRunEvent(
-                          file,
-                          fileSize,
-                          videoSize,
-                          crop,
-                          null,
-                        ),
+                        OnRunEvent(file, fileSize, fileSize, crop, null),
                       );
                 }
               : null,

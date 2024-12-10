@@ -113,17 +113,29 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (BuildContext context) => ProjectsBloc(
-              Project(fileManager, configService),
+              Project(
+                fileManager,
+                configService,
+                videoManager,
+              ),
             )..add(const LoadProjects()),
           ),
           BlocProvider(
             create: (BuildContext context) => ProjectBloc(
-              Project(fileManager, configService),
+              Project(
+                fileManager,
+                configService,
+                videoManager,
+              ),
             ),
           ),
           BlocProvider(
             create: (BuildContext context) => ProjectDeletionBloc(
-              Project(fileManager, configService),
+              Project(
+                fileManager,
+                configService,
+                videoManager,
+              ),
             ),
           ),
         ],
