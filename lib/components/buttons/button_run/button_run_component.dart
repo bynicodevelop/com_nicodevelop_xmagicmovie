@@ -60,7 +60,8 @@ class ButtonRunComponent extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final bool isLoading = state is RunInProgressState;
+        final bool isLoading =
+            state is RunInProgressState || state is RunProgressUpdate;
 
         return ElevatedButton(
           onPressed: !isLoading && hasActiveTool
