@@ -1,5 +1,5 @@
-import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/bloc/project_delete_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/button_project/button_project_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/button_project_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';

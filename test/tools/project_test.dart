@@ -3,7 +3,7 @@ import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/bloc/project_delete_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';

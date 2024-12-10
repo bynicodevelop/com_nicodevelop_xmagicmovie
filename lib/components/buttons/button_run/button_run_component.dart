@@ -1,6 +1,6 @@
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_state.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/run_button/bloc/run_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/modals/bloc/modal_bloc.dart';
@@ -10,10 +10,10 @@ import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RunButtonComponent extends StatelessWidget {
+class ButtonRunComponent extends StatelessWidget {
   final bool hasActiveTool;
 
-  const RunButtonComponent({
+  const ButtonRunComponent({
     super.key,
     this.hasActiveTool = false,
   });

@@ -1,5 +1,5 @@
-import 'package:com_nicodevelop_xmagicmovie/components/run_button/bloc/run_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/run_button/run_button_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/button_run_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class ToolComponent extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     left: kDefaultPadding * 2,
                   ),
-                  child: RunButtonComponent(
+                  child: ButtonRunComponent(
                     hasActiveTool: hasActiveTool,
                   ),
                 ),

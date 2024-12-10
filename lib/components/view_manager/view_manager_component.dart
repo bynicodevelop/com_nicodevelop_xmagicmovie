@@ -1,3 +1,4 @@
+import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
@@ -31,6 +32,10 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
 
               context.read<ToolBloc>().add(
                     OnResetToolEvent(),
+                  );
+
+              context.read<ProjectsBloc>().add(
+                    const LoadProjects(),
                   );
               return;
             }
