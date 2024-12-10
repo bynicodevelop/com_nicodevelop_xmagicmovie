@@ -19,6 +19,34 @@ class ButtonRunComponent extends StatelessWidget {
     this.hasActiveTool = false,
   });
 
+  /// récupère les données de la vidéo
+  /// importée ou à partir de l'état du projet
+  VideoDataModel _getVideoDataModel(
+    BuildContext context,
+  ) {
+    final UploadState uplaodState = context.read<UploadBloc>().state;
+    final VideoDataModel projectState =
+        context.read<ProjectBloc>().state.videoDataModel;
+
+    return uplaodState.files.isNotEmpty
+        ? uplaodState.files.first
+        : projectState;
+  }
+
+  CropModel _getCropModel(
+    BuildContext context,
+  ) {
+    final CropSelectorState cropState =
+        context.read<CropSelectorBloc>().state;
+
+    return CropModel(
+      cropX: cropState.cropX,
+      cropY: cropState.cropY,
+      cropWidth: cropState.cropWidth,
+      cropHeight: cropState.cropHeight,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RunBloc, RunState>(
@@ -38,37 +66,30 @@ class ButtonRunComponent extends StatelessWidget {
         return ElevatedButton(
           onPressed: !isLoading && hasActiveTool
               ? () {
-                  late List<VideoDataModel> videoDataModel;
+                  final VideoDataModel videoDataModel = _getVideoDataModel(
+                    context,
+                  );
 
-                  final UploadState uplaodState =
-                      context.read<UploadBloc>().state;
-                  final VideoDataModel projectState =
-                      context.read<ProjectBloc>().state.videoDataModel;
+                  /// récupère les données de la vidéo (pour la taille)
                   final VideoState videoState = context.read<VideoBloc>().state;
-                  final CropSelectorState cropState =
-                      context.read<CropSelectorBloc>().state;
 
-                  if (uplaodState.files.isNotEmpty) {
-                    videoDataModel = uplaodState.files;
-                  } else {
-                    videoDataModel = [projectState];
-                  }
-
-                  final VideoDataModel file = videoDataModel.first;
-                  final SizeModel fileSize = file.size;
+                  final SizeModel fileSize = videoDataModel.size;
                   final SizeModel videoSize = SizeModel(
                     videoState.maxWidth,
                     videoState.maxHeight,
                   );
-                  final CropModel crop = CropModel(
-                    cropX: cropState.cropX,
-                    cropY: cropState.cropY,
-                    cropWidth: cropState.cropWidth,
-                    cropHeight: cropState.cropHeight,
+                  final CropModel crop = _getCropModel(
+                    context,
                   );
 
                   context.read<RunBloc>().add(
-                        OnRunEvent(file, fileSize, videoSize, crop, null),
+                        OnRunEvent(
+                          videoDataModel,
+                          fileSize,
+                          videoSize,
+                          crop,
+                          null,
+                        ),
                       );
                 }
               : null,

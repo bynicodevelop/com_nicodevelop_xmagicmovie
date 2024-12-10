@@ -57,20 +57,6 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
             }
           },
         ),
-        BlocListener<ViewManagerBloc, ViewManagerState>(
-          listener: (context, state) {
-            if (state.viewName.isNotEmpty) {
-              final targetPage =
-                  kListView.keys.toList().indexOf(state.viewName);
-
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (_pageController.hasClients) {
-                  _pageController.jumpToPage(targetPage);
-                }
-              });
-            }
-          },
-        ),
         BlocListener<UploadBloc, UploadState>(
           listener: (context, state) {
             if (state is UploadSuccess && state.files.isNotEmpty) {
@@ -90,6 +76,20 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
               context.read<ToolBloc>().add(
                     OnInitializeToolEvent(),
                   );
+            }
+          },
+        ),
+        BlocListener<ViewManagerBloc, ViewManagerState>(
+          listener: (context, state) {
+            if (state.viewName.isNotEmpty) {
+              final targetPage =
+                  kListView.keys.toList().indexOf(state.viewName);
+
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (_pageController.hasClients) {
+                  _pageController.jumpToPage(targetPage);
+                }
+              });
             }
           },
         ),
