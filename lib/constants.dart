@@ -43,7 +43,9 @@ Map<String, Widget> kListView = {
   kCropSelectorView: BlocBuilder<VideoBloc, VideoState>(
     builder: (context, state) {
       if (!state.isInitialized || state.controller == null) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       }
 
       final VideoPlayerController controller = state.controller!;

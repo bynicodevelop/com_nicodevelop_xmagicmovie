@@ -10,11 +10,19 @@ part 'video_event.dart';
 part 'video_state.dart';
 
 class VideoBloc extends Bloc<VideoEvent, VideoState> {
-  VideoBloc() : super(const PlayerInitial()) {
+  VideoBloc() : super(const PlayerInitial(null, null, false, false, 0, 0)) {
+    on<OnResetVideoEvent>(_onResetVideo);
     on<InitializeVideo>(_onInitializeVideo);
     on<UpdateConstraintsEvent>(_onUpdateSize);
     on<OnPlayEvent>(_onPlay);
     on<OnPauseEvent>(_onPause);
+  }
+
+  Future<void> _onResetVideo(
+    OnResetVideoEvent event,
+    Emitter<VideoState> emit,
+  ) async {
+    emit(const PlayerReset());
   }
 
   Future<void> _onInitializeVideo(
@@ -23,10 +31,13 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   ) async {
     final controller = VideoPlayerController.file(File(event.file.path));
     await controller.initialize();
-    emit(state.copyWith(
-      controller: controller,
-      isInitialized: true,
-      isPlaying: false,
+    emit(PlayerInitial(
+      state.videoData,
+      controller,
+      true,
+      false,
+      state.maxWidth,
+      state.maxHeight,
     ));
   }
 

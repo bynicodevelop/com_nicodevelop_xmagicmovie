@@ -16,6 +16,10 @@ class InitializeVideo extends VideoEvent {
   List<Object> get props => [file];
 }
 
+class OnResetVideoEvent extends VideoEvent {
+  const OnResetVideoEvent();
+}
+
 class UpdateConstraintsEvent extends VideoEvent {
   final double maxWidth;
   final double maxHeight;

@@ -20,6 +20,35 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<VideoBloc, VideoState>(
+          listener: (context, state) {
+            if (state is PlayerReset) {
+              context.read<ViewManagerBloc>().add(
+                    const ViewManagerEvent(
+                      kUploadView,
+                    ),
+                  );
+
+              context.read<ToolBloc>().add(
+                    OnResetToolEvent(),
+                  );
+              return;
+            }
+
+            if (state is PlayerInitial) {
+              context.read<ViewManagerBloc>().add(
+                    const ViewManagerEvent(
+                      kCropSelectorView,
+                    ),
+                  );
+
+              context.read<ToolBloc>().add(
+                    OnInitializeToolEvent(),
+                  );
+              return;
+            }
+          },
+        ),
         BlocListener<ViewManagerBloc, ViewManagerState>(
           listener: (context, state) {
             if (state.viewName.isNotEmpty) {
@@ -44,13 +73,7 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
                   );
 
               context.read<ToolBloc>().add(
-                    OnPlayerToolEvent(),
-                  );
-
-              context.read<ViewManagerBloc>().add(
-                    const ViewManagerEvent(
-                      kCropSelectorView,
-                    ),
+                    OnInitializeToolEvent(),
                   );
             }
           },

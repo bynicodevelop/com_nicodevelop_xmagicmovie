@@ -1,4 +1,5 @@
 import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/bloc/project_delete_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/button_new/button_new_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
@@ -102,7 +103,7 @@ class App extends StatelessWidget {
             create: (BuildContext context) => ToolBloc(
               Tool(),
             )..add(
-                OnPlayerToolEvent(),
+                OnResetToolEvent(),
               ),
           ),
           BlocProvider(
@@ -144,6 +145,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const ButtonNewComponent(),
         actions: const [
           ToolComponent(),
         ],

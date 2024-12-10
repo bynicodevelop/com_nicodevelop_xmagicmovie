@@ -15,7 +15,7 @@ class ToolComponent extends StatelessWidget {
         final bool isLoading = state is RunInProgress;
 
         return BlocBuilder<ToolBloc, ToolState>(builder: (context, state) {
-          final bool isDisabled = state.isPlayerTool || isLoading;
+          final bool isDisabled = state is ToolReset || isLoading;
           final bool hasActiveTool = state.canRun;
 
           return Padding(

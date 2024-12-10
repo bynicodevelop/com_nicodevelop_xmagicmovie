@@ -1,13 +1,11 @@
 part of 'tool_bloc.dart';
 
 sealed class ToolState extends Equatable {
-  final String toolName;
   final bool isPlayerTool;
   final bool isCropTool;
   final bool canRun;
 
   const ToolState(
-    this.toolName,
     this.isPlayerTool,
     this.isCropTool, {
     this.canRun = false,
@@ -15,7 +13,6 @@ sealed class ToolState extends Equatable {
 
   @override
   List<Object> get props => [
-        toolName,
         isPlayerTool,
         isCropTool,
         canRun,
@@ -24,7 +21,22 @@ sealed class ToolState extends Equatable {
 
 final class ToolInitial extends ToolState {
   const ToolInitial(
-    super.toolName,
+    super.isPlayerTool,
+    super.isCropTool, {
+    super.canRun = false,
+  });
+}
+
+final class ToolInitialized extends ToolState {
+  const ToolInitialized(
+    super.isPlayerTool,
+    super.isCropTool, {
+    super.canRun = false,
+  });
+}
+
+final class ToolReset extends ToolState {
+  const ToolReset(
     super.isPlayerTool,
     super.isCropTool, {
     super.canRun = false,

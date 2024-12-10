@@ -3,7 +3,6 @@ import 'package:com_nicodevelop_xmagicmovie/components/button_delete_project/but
 import 'package:com_nicodevelop_xmagicmovie/components/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:flutter/material.dart';
@@ -35,13 +34,7 @@ class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
             );
 
         context.read<ToolBloc>().add(
-              OnPlayerToolEvent(),
-            );
-
-        context.read<ViewManagerBloc>().add(
-              const ViewManagerEvent(
-                kCropSelectorView,
-              ),
+              OnInitializeToolEvent(),
             );
       },
       child: MouseRegion(

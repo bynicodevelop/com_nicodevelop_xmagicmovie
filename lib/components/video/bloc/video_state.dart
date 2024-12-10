@@ -45,5 +45,16 @@ class VideoState extends Equatable {
 }
 
 final class PlayerInitial extends VideoState {
-  const PlayerInitial() : super(null, null, false, false, 0, 0);
+  const PlayerInitial(
+    super.videoData,
+    super.controller,
+    super.isInitialized,
+    super.isPlaying,
+    super.maxWidth,
+    super.maxHeight,
+  );
+}
+
+final class PlayerReset extends PlayerInitial {
+  const PlayerReset() : super(null, null, false, false, 0, 0);
 }

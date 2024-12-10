@@ -1,5 +1,4 @@
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/tool.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,7 +7,6 @@ void main() {
     final tool = Tool();
     final event = OnPlayerToolEvent();
     const state = ToolInitial(
-      kPlayerTool,
       false,
       false,
     );
@@ -28,7 +26,6 @@ void main() {
     final tool = Tool();
     final event = OnCropToolEvent();
     const state = ToolInitial(
-      kPlayerTool,
       false,
       false,
     );
