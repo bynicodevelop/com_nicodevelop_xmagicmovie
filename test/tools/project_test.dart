@@ -1,7 +1,10 @@
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,28 +30,43 @@ class MockState {
   final XFile? videoFile;
   final List<ConfigModel>? projects;
   final LoadingState loadingState;
+  final VideoDataModel? videoDataModel; // Ajoute cette propriété
 
-  MockState({this.videoFile, this.projects, this.loadingState = LoadingState.idle});
+  MockState({
+    this.videoFile,
+    this.projects,
+    this.loadingState = LoadingState.idle,
+    this.videoDataModel, // Initialise cette propriété
+  });
 
-  MockState copyWith({XFile? videoFile, List<ConfigModel>? projects, LoadingState? loadingState}) {
+  MockState copyWith({
+    XFile? videoFile,
+    List<ConfigModel>? projects,
+    LoadingState? loadingState,
+    VideoDataModel? videoDataModel, // Ajoute ce paramètre à copyWith
+  }) {
     return MockState(
       videoFile: videoFile ?? this.videoFile,
       projects: projects ?? this.projects,
       loadingState: loadingState ?? this.loadingState,
+      videoDataModel: videoDataModel ?? this.videoDataModel,
     );
   }
 }
 
-@GenerateMocks([FileManager, ConfigService])
+
+@GenerateMocks([FileManager, ConfigService, VideoManager])
 void main() {
   late MockFileManager mockFileManager;
   late MockConfigService mockConfigService;
+  late MockVideoManager mockVideoService;
   late Project project;
 
   setUp(() {
     mockFileManager = MockFileManager();
     mockConfigService = MockConfigService();
-    project = Project(mockFileManager, mockConfigService);
+    mockVideoService = MockVideoManager();
+    project = Project(mockFileManager, mockConfigService, mockVideoService,);
   });
 
   test('loadProjects emits loading state and then loaded state with ConfigModel projects', () async {
@@ -116,6 +134,8 @@ void main() {
     // Stub du FileManager pour lancer une exception
     when(mockFileManager.getFilePath(mockProjectId, mockSourceFileName))
         .thenThrow(Exception('File not found'));
+
+    when(mockVideoService.getVideoSize(XFile(''))).thenAnswer((_) async => SizeModel(1920, 1080));
 
     void emit(MockState state) {
       emittedState = state;
