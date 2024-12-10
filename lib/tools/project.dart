@@ -1,9 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
-import 'package:cross_file/cross_file.dart';
 
 class Project {
   final FileManager fileManager;
@@ -42,22 +40,14 @@ class Project {
 
   Future<void> loadProject(event, emit, state) async {
     try {
-      final videoPath = await fileManager.getFilePath(
+      final videoDataModel = await videoManager.createVideoDataModel(
         event.config.projectId,
         event.config.sourceFileName,
       );
-      final XFile videoFile = XFile(videoPath);
 
       emit(state.copyWith(
         lastUpdated: DateTime.now(),
-        videoDataModel: VideoDataModel(
-          projectId: event.config.projectId,
-          name: event.config.sourceFileName ?? '',
-          path: videoPath,
-          uniqueFileName: event.config.sourceFileName ?? '',
-          xfile: videoFile,
-          size: await videoManager.getVideoSize(videoFile),
-        ),
+        videoDataModel: videoDataModel,
       ));
     } catch (e) {
       emit(

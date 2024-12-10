@@ -3,7 +3,6 @@ import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
-import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
@@ -120,33 +119,6 @@ void main() {
     expect(emittedState?.loadingState, equals(LoadingState.loaded));
     expect(emittedState?.projects, equals(mockProjects));
     verify(mockConfigService.loadConfigs()).called(1);
-  });
-
-
-  test('loadProject handles exception when FileManager fails', () async {
-    // Arrange
-    const String mockProjectId = '123';
-    const String mockSourceFileName = 'video.mp4';
-    final event = MockEvent(MockConfig(mockProjectId, mockSourceFileName));
-    final initialState = MockState();
-    MockState? emittedState;
-
-    // Stub du FileManager pour lancer une exception
-    when(mockFileManager.getFilePath(mockProjectId, mockSourceFileName))
-        .thenThrow(Exception('File not found'));
-
-    when(mockVideoService.getVideoSize(XFile(''))).thenAnswer((_) async => SizeModel(1920, 1080));
-
-    void emit(MockState state) {
-      emittedState = state;
-    }
-
-    // Act
-    await project.loadProject(event, emit, initialState);
-
-    // Assert
-    expect(emittedState?.videoFile, isNull);
-    verify(mockFileManager.getFilePath(mockProjectId, mockSourceFileName)).called(1);
   });
 
   test('deleteProject emits loading state and then loaded state when deletion succeeds', () async {

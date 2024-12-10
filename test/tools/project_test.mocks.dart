@@ -3,22 +3,22 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i6;
 import 'dart:io' as _i2;
 
-import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart' as _i9;
+import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart' as _i10;
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart' as _i12;
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart' as _i4;
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart'
-    as _i11;
+    as _i5;
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart'
-    as _i8;
+    as _i9;
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart' as _i3;
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart'
-    as _i10;
-import 'package:cross_file/cross_file.dart' as _i6;
+    as _i11;
+import 'package:cross_file/cross_file.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:mockito/src/dummies.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -63,6 +63,17 @@ class _FakeSizeModel_2 extends _i1.SmartFake implements _i4.SizeModel {
         );
 }
 
+class _FakeVideoDataModel_3 extends _i1.SmartFake
+    implements _i5.VideoDataModel {
+  _FakeVideoDataModel_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [FileManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -72,27 +83,27 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
   }
 
   @override
-  _i5.Future<_i2.Directory> getWorkingDirectory() => (super.noSuchMethod(
+  _i6.Future<_i2.Directory> getWorkingDirectory() => (super.noSuchMethod(
         Invocation.method(
           #getWorkingDirectory,
           [],
         ),
-        returnValue: _i5.Future<_i2.Directory>.value(_FakeDirectory_0(
+        returnValue: _i6.Future<_i2.Directory>.value(_FakeDirectory_0(
           this,
           Invocation.method(
             #getWorkingDirectory,
             [],
           ),
         )),
-      ) as _i5.Future<_i2.Directory>);
+      ) as _i6.Future<_i2.Directory>);
 
   @override
-  String getFileName(_i6.XFile? file) => (super.noSuchMethod(
+  String getFileName(_i7.XFile? file) => (super.noSuchMethod(
         Invocation.method(
           #getFileName,
           [file],
         ),
-        returnValue: _i7.dummyValue<String>(
+        returnValue: _i8.dummyValue<String>(
           this,
           Invocation.method(
             #getFileName,
@@ -102,17 +113,17 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
       ) as String);
 
   @override
-  _i5.Future<Map<String, String>> generateUniqueFileName(_i6.XFile? file) =>
+  _i6.Future<Map<String, String>> generateUniqueFileName(_i7.XFile? file) =>
       (super.noSuchMethod(
         Invocation.method(
           #generateUniqueFileName,
           [file],
         ),
-        returnValue: _i5.Future<Map<String, String>>.value(<String, String>{}),
-      ) as _i5.Future<Map<String, String>>);
+        returnValue: _i6.Future<Map<String, String>>.value(<String, String>{}),
+      ) as _i6.Future<Map<String, String>>);
 
   @override
-  _i5.Future<String> getFilePath(
+  _i6.Future<String> getFilePath(
     String? projectId,
     String? fileName,
   ) =>
@@ -124,7 +135,7 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
             fileName,
           ],
         ),
-        returnValue: _i5.Future<String>.value(_i7.dummyValue<String>(
+        returnValue: _i6.Future<String>.value(_i8.dummyValue<String>(
           this,
           Invocation.method(
             #getFilePath,
@@ -134,10 +145,10 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
             ],
           ),
         )),
-      ) as _i5.Future<String>);
+      ) as _i6.Future<String>);
 
   @override
-  _i5.Future<void> saveJsonFile(
+  _i6.Future<void> saveJsonFile(
     String? path,
     String? fileName,
     Map<String, dynamic>? data,
@@ -151,36 +162,36 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
             data,
           ],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
-  _i5.Future<Map<String, dynamic>> readJsonFile(String? path) =>
+  _i6.Future<Map<String, dynamic>> readJsonFile(String? path) =>
       (super.noSuchMethod(
         Invocation.method(
           #readJsonFile,
           [path],
         ),
         returnValue:
-            _i5.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-      ) as _i5.Future<Map<String, dynamic>>);
+            _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i6.Future<Map<String, dynamic>>);
 
   @override
-  _i5.Future<void> deleteDirectory(String? path) => (super.noSuchMethod(
+  _i6.Future<void> deleteDirectory(String? path) => (super.noSuchMethod(
         Invocation.method(
           #deleteDirectory,
           [path],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 }
 
 /// A class which mocks [ConfigService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockConfigService extends _i1.Mock implements _i8.ConfigService {
+class MockConfigService extends _i1.Mock implements _i9.ConfigService {
   MockConfigService() {
     _i1.throwOnMissingStub(this);
   }
@@ -195,30 +206,30 @@ class MockConfigService extends _i1.Mock implements _i8.ConfigService {
       ) as _i3.FileManager);
 
   @override
-  _i5.Future<List<_i9.ConfigModel>> loadConfigs() => (super.noSuchMethod(
+  _i6.Future<List<_i10.ConfigModel>> loadConfigs() => (super.noSuchMethod(
         Invocation.method(
           #loadConfigs,
           [],
         ),
         returnValue:
-            _i5.Future<List<_i9.ConfigModel>>.value(<_i9.ConfigModel>[]),
-      ) as _i5.Future<List<_i9.ConfigModel>>);
+            _i6.Future<List<_i10.ConfigModel>>.value(<_i10.ConfigModel>[]),
+      ) as _i6.Future<List<_i10.ConfigModel>>);
 
   @override
-  _i5.Future<void> saveConfig(_i9.ConfigModel? config) => (super.noSuchMethod(
+  _i6.Future<void> saveConfig(_i10.ConfigModel? config) => (super.noSuchMethod(
         Invocation.method(
           #saveConfig,
           [config],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 }
 
 /// A class which mocks [VideoManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockVideoManager extends _i1.Mock implements _i10.VideoManager {
+class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
   MockVideoManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -233,24 +244,24 @@ class MockVideoManager extends _i1.Mock implements _i10.VideoManager {
       ) as _i3.FileManager);
 
   @override
-  _i5.Future<_i4.SizeModel> getVideoSize(_i6.XFile? file) =>
+  _i6.Future<_i4.SizeModel> getVideoSize(_i7.XFile? file) =>
       (super.noSuchMethod(
         Invocation.method(
           #getVideoSize,
           [file],
         ),
-        returnValue: _i5.Future<_i4.SizeModel>.value(_FakeSizeModel_2(
+        returnValue: _i6.Future<_i4.SizeModel>.value(_FakeSizeModel_2(
           this,
           Invocation.method(
             #getVideoSize,
             [file],
           ),
         )),
-      ) as _i5.Future<_i4.SizeModel>);
+      ) as _i6.Future<_i4.SizeModel>);
 
   @override
-  _i5.Future<void> cropVideo(
-    _i11.VideoDataModel? file,
+  _i6.Future<void> cropVideo(
+    _i5.VideoDataModel? file,
     _i4.SizeModel? videoSize,
     _i12.CropModel? crop,
   ) =>
@@ -263,7 +274,48 @@ class MockVideoManager extends _i1.Mock implements _i10.VideoManager {
             crop,
           ],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<_i5.VideoDataModel> createVideoDataModel(
+    String? projectId,
+    String? sourceFileName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createVideoDataModel,
+          [
+            projectId,
+            sourceFileName,
+          ],
+        ),
+        returnValue: _i6.Future<_i5.VideoDataModel>.value(_FakeVideoDataModel_3(
+          this,
+          Invocation.method(
+            #createVideoDataModel,
+            [
+              projectId,
+              sourceFileName,
+            ],
+          ),
+        )),
+      ) as _i6.Future<_i5.VideoDataModel>);
+
+  @override
+  _i6.Future<_i5.VideoDataModel> processFile(_i7.XFile? file) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #processFile,
+          [file],
+        ),
+        returnValue: _i6.Future<_i5.VideoDataModel>.value(_FakeVideoDataModel_3(
+          this,
+          Invocation.method(
+            #processFile,
+            [file],
+          ),
+        )),
+      ) as _i6.Future<_i5.VideoDataModel>);
 }

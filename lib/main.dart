@@ -86,6 +86,7 @@ class App extends StatelessWidget {
             create: (BuildContext context) => UploadBloc(
               uplaodService,
               configService,
+              videoManager,
             ),
           ),
           BlocProvider(

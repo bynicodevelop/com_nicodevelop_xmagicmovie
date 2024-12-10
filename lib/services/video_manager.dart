@@ -6,7 +6,6 @@ import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/statistics_callback.dart';
 import 'package:flutter/material.dart';
 
 class VideoManager {
@@ -96,5 +95,58 @@ class VideoManager {
     } catch (e) {
       throw Exception('Error while cropping video: $e');
     }
+  }
+
+  Future<VideoDataModel> createVideoDataModel(
+    String projectId,
+    String sourceFileName,
+  ) async {
+    final String videoPath =
+        await fileManager.getFilePath(projectId, sourceFileName);
+
+    return _buildVideoDataModel(
+      projectId: projectId,
+      filePath: videoPath,
+      fileName: sourceFileName,
+    );
+  }
+
+  Future<VideoDataModel> processFile(XFile file) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
+    final Map<String, String> uniqueFileName =
+        await fileManager.generateUniqueFileName(file);
+    final String projectPath = "${workingDir.path}/${uniqueFileName['hash']}";
+    final String filePath = '$projectPath/${uniqueFileName['fileName']}';
+
+    final Directory directory = Directory(projectPath);
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+
+    await file.saveTo(filePath);
+
+    return _buildVideoDataModel(
+      projectId: uniqueFileName['hash']!,
+      filePath: filePath,
+      fileName: uniqueFileName['fileName']!,
+    );
+  }
+
+  Future<VideoDataModel> _buildVideoDataModel({
+    required String projectId,
+    required String filePath,
+    required String fileName,
+  }) async {
+    final XFile videoFile = XFile(filePath);
+    final SizeModel size = await getVideoSize(videoFile);
+
+    return VideoDataModel(
+      projectId: projectId,
+      name: fileName,
+      path: filePath,
+      uniqueFileName: fileName,
+      xfile: videoFile,
+      size: size,
+    );
   }
 }

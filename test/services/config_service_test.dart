@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'upload_service_test.mocks.dart';
+import 'config_service_test.mocks.dart';
 
+@GenerateMocks([FileManager])
 void main() {
   late ConfigService configService;
   late MockFileManager mockFileManager;
