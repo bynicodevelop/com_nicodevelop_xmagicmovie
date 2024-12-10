@@ -1,4 +1,5 @@
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/list_projet_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/progress_bar/progress_bar_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
@@ -54,6 +55,7 @@ Map<String, Widget> kListView = {
 
       return Column(
         children: [
+          const ProgressBarComponent(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,

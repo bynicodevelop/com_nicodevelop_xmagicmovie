@@ -7,18 +7,31 @@ sealed class RunState extends Equatable {
   List<Object> get props => [];
 }
 
-final class RunInitial extends RunState {}
+final class RunInitialState extends RunState {}
 
-final class RunInProgress extends RunState {
+final class RunInProgressState extends RunState {
   final VideoDataModel file;
   final SizeModel videoSize;
   final CropModel crop;
 
-  const RunInProgress({
+  const RunInProgressState({
     required this.file,
     required this.videoSize,
     required this.crop,
   });
 }
 
-final class RunSuccess extends RunState {}
+final class RunSuccessState extends RunState {}
+
+class RunProgressUpdate extends RunState {
+  final int progress;
+
+  const RunProgressUpdate({
+    required this.progress,
+  });
+
+  @override
+  List<Object> get props => [
+        progress,
+      ];
+}

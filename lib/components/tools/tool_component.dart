@@ -12,7 +12,7 @@ class ToolComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RunBloc, RunState>(
       builder: (context, state) {
-        final bool isLoading = state is RunInProgress;
+        final bool isLoading = state is RunInProgressState;
 
         return BlocBuilder<ToolBloc, ToolState>(builder: (context, state) {
           final bool isDisabled = state is ToolReset || isLoading;

@@ -264,6 +264,7 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
     _i5.VideoDataModel? file,
     _i4.SizeModel? videoSize,
     _i12.CropModel? crop,
+    void Function(int)? onProgress,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -272,6 +273,7 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
             file,
             videoSize,
             crop,
+            onProgress,
           ],
         ),
         returnValue: _i6.Future<void>.value(),

@@ -14,14 +14,14 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 
   RunBloc(
     this._videoManager,
-  ) : super(RunInitial()) {
+  ) : super(RunInitialState()) {
     on<OnRunEvent>(_runEvent);
     on<OnRunInProgress>(_onRunInProgress);
     on<OnRunSuccess>(_onRunSuccess);
   }
 
   void _runEvent(event, emit) {
-    emit(RunInitial());
+    emit(RunInitialState());
 
     // Afficher les données initiales pour vérification
     debugPrint("File Size (Base): ${event.fileSize.toJson()}");
@@ -74,7 +74,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
   }
 
   Future<void> _onRunInProgress(event, emit) async {
-    emit(RunInProgress(
+    emit(RunInProgressState(
       file: event.file,
       videoSize: event.videoSize,
       crop: event.crop,
@@ -84,7 +84,14 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       event.file,
       event.fileSize,
       event.finalCrop,
+      (progress) => emit(RunProgressUpdate(
+        progress: progress,
+      )),
     );
+
+    emit(const RunProgressUpdate(
+      progress: 100,
+    ));
 
     add(OnRunSuccess(
       event.file,
@@ -96,6 +103,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
   }
 
   void _onRunSuccess(event, emit) {
-    emit(RunSuccess());
+    emit(RunSuccessState());
   }
 }

@@ -36,8 +36,7 @@ class ButtonRunComponent extends StatelessWidget {
   CropModel _getCropModel(
     BuildContext context,
   ) {
-    final CropSelectorState cropState =
-        context.read<CropSelectorBloc>().state;
+    final CropSelectorState cropState = context.read<CropSelectorBloc>().state;
 
     return CropModel(
       cropX: cropState.cropX,
@@ -51,7 +50,7 @@ class ButtonRunComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RunBloc, RunState>(
       listener: (context, state) {
-        if (state is RunSuccess) {
+        if (state is RunSuccessState) {
           context.read<ModalBloc>().add(
                 const OnOpenModal(
                   title: "C'est prêt ! 🎉",
@@ -61,7 +60,7 @@ class ButtonRunComponent extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final bool isLoading = state is RunInProgress;
+        final bool isLoading = state is RunInProgressState;
 
         return ElevatedButton(
           onPressed: !isLoading && hasActiveTool
