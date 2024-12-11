@@ -12,11 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ButtonRunComponent extends StatelessWidget {
-  final bool hasActiveTool;
+  final bool readOnly;
 
   const ButtonRunComponent({
+    this.readOnly = false,
     super.key,
-    this.hasActiveTool = false,
   });
 
   /// récupère les données de la vidéo
@@ -48,7 +48,7 @@ class ButtonRunComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RunBloc, RunState>(
+    return BlocListener<RunBloc, RunState>(
       listener: (context, state) {
         if (state is RunSuccessState) {
           context.read<ModalBloc>().add(
@@ -59,43 +59,38 @@ class ButtonRunComponent extends StatelessWidget {
               );
         }
       },
-      builder: (context, state) {
-        final bool isLoading =
-            state is RunInProgressState || state is RunProgressUpdate;
+      child: ElevatedButton(
+        onPressed: readOnly
+            ? null
+            : () {
+                final VideoDataModel videoDataModel = _getVideoDataModel(
+                  context,
+                );
 
-        return ElevatedButton(
-          onPressed: !isLoading && hasActiveTool
-              ? () {
-                  final VideoDataModel videoDataModel = _getVideoDataModel(
-                    context,
-                  );
+                /// récupère les données de la vidéo (pour la taille)
+                final VideoState videoState = context.read<VideoBloc>().state;
 
-                  /// récupère les données de la vidéo (pour la taille)
-                  final VideoState videoState = context.read<VideoBloc>().state;
+                final SizeModel fileSize = videoDataModel.size;
+                final SizeModel videoSize = SizeModel(
+                  videoState.maxWidth,
+                  videoState.maxHeight,
+                );
+                final CropModel crop = _getCropModel(
+                  context,
+                );
 
-                  final SizeModel fileSize = videoDataModel.size;
-                  final SizeModel videoSize = SizeModel(
-                    videoState.maxWidth,
-                    videoState.maxHeight,
-                  );
-                  final CropModel crop = _getCropModel(
-                    context,
-                  );
-
-                  context.read<RunBloc>().add(
-                        OnRunEvent(
-                          videoDataModel,
-                          fileSize,
-                          videoSize,
-                          crop,
-                          null,
-                        ),
-                      );
-                }
-              : null,
-          child: const Text('Crop'),
-        );
-      },
+                context.read<RunBloc>().add(
+                      OnRunEvent(
+                        videoDataModel,
+                        fileSize,
+                        videoSize,
+                        crop,
+                        null,
+                      ),
+                    );
+              },
+        child: const Text('Crop'),
+      ),
     );
   }
 }
