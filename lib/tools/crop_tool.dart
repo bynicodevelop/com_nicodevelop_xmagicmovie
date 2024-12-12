@@ -21,45 +21,50 @@ class CropTool {
   }
 
   void resizeCropArea(event, emit, state) {
-    double newWidth = state.cropWidth +
-        (event.adjustX ? -event.widthDelta : event.widthDelta);
-    double newHeight = state.cropHeight +
-        (event.adjustY ? -event.heightDelta : event.heightDelta);
+    double newWidth = state.cropWidth;
+    double newHeight = state.cropHeight;
+    double newX = state.cropX;
+    double newY = state.cropY;
 
-    if (state.lockedAspectRatio != 0) {
-      if (event.adjustX && !event.adjustY) {
-        newHeight = newWidth / state.lockedAspectRatio!;
-      } else if (event.adjustY && !event.adjustX) {
-        newWidth = newHeight * state.lockedAspectRatio!;
-      } else if (event.adjustX && event.adjustY) {
-        newHeight = newWidth / state.lockedAspectRatio!;
-      }
+    // Redimensionner depuis le coin supérieur-gauche
+    if (event.adjustX && event.adjustY) {
+      newWidth = (state.cropWidth - event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight - event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+      newX = (state.cropX + event.widthDelta)
+          .clamp(0.0, state.maxWidth - newWidth);
+      newY = (state.cropY + event.heightDelta)
+          .clamp(0.0, state.maxHeight - newHeight);
     }
 
-    // Calcul des bornes effectives pour éviter des erreurs de clamp
-    final double effectiveMaxWidth = state.maxWidth - state.cropX;
-    final double effectiveMinWidth = state.minCropWidth <= effectiveMaxWidth
-        ? state.minCropWidth
-        : effectiveMaxWidth;
+    // Redimensionner depuis le coin supérieur-droit
+    else if (!event.adjustX && event.adjustY) {
+      newWidth = (state.cropWidth + event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight - event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+      newY = (state.cropY + event.heightDelta)
+          .clamp(0.0, state.maxHeight - newHeight);
+    }
 
-    final double effectiveMaxHeight = state.maxHeight - state.cropY;
-    final double effectiveMinHeight = state.minCropHeight <= effectiveMaxHeight
-        ? state.minCropHeight
-        : effectiveMaxHeight;
+    // Redimensionner depuis le coin inférieur-gauche
+    else if (event.adjustX && !event.adjustY) {
+      newWidth = (state.cropWidth - event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight + event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+      newX = (state.cropX + event.widthDelta)
+          .clamp(0.0, state.maxWidth - newWidth);
+    }
 
-    // Appliquer clamp avec les bornes ajustées
-    newWidth = newWidth.clamp(effectiveMinWidth, effectiveMaxWidth);
-    newHeight = newHeight.clamp(effectiveMinHeight, effectiveMaxHeight);
-
-    // Calcul des nouvelles positions
-    final double newX = event.adjustX
-        ? (state.cropX + event.widthDelta).clamp(0.0, state.maxWidth - newWidth)
-        : state.cropX;
-
-    final double newY = event.adjustY
-        ? (state.cropY + event.heightDelta)
-            .clamp(0.0, state.maxHeight - newHeight)
-        : state.cropY;
+    // Redimensionner depuis le coin inférieur-droit
+    else if (!event.adjustX && !event.adjustY) {
+      newWidth = (state.cropWidth + event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight + event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+    }
 
     // Émettre le nouvel état avec les valeurs mises à jour
     emit(state.copyWith(

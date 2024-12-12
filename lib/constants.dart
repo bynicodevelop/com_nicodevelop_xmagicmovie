@@ -1,5 +1,6 @@
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/list_projet_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/progress_bar/progress_bar_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/shared/run_status/run_status.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
@@ -53,42 +54,49 @@ Map<String, Widget> kListView = {
       final double aspectRatio = controller.value.aspectRatio;
       final bool isPlaying = state.isPlaying;
 
-      return Column(
-        children: [
-          const ProgressBarComponent(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+      return RunStatus(
+        builder: (context, isLoading) {
+          return Column(
             children: [
-              VideoComponent(
-                controller: controller,
-                aspectRatio: aspectRatio,
+              const ProgressBarComponent(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  VideoComponent(
+                    controller: controller,
+                    aspectRatio: aspectRatio,
+                    readOnly: isLoading,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: kDefaultPadding,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<VideoBloc>().add(
+                              !isPlaying
+                                  ? const OnPlayEvent()
+                                  : const OnPauseEvent(),
+                            );
+                      },
+                      icon: Icon(
+                        !isPlaying
+                            ? Icons.play_arrow_rounded
+                            : Icons.pause_rounded,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: kDefaultPadding,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    context.read<VideoBloc>().add(
-                          !isPlaying
-                              ? const OnPlayEvent()
-                              : const OnPauseEvent(),
-                        );
-                  },
-                  icon: Icon(
-                    !isPlaying ? Icons.play_arrow_rounded : Icons.pause_rounded,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          );
+        },
       );
     },
   ),

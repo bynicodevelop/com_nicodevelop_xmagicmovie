@@ -15,10 +15,12 @@ class _ConstraintsData {
 class VideoComponent extends StatefulWidget {
   final VideoPlayerController controller;
   final double aspectRatio;
+  final bool readOnly;
 
   const VideoComponent({
     required this.controller,
     required this.aspectRatio,
+    this.readOnly = false,
     super.key,
   });
 
@@ -87,6 +89,7 @@ class _VideoComponentState extends State<VideoComponent> {
                         aspectRatio: widget.aspectRatio,
                         child: VideoPlayer(widget.controller),
                       ),
+                      readOnly: widget.readOnly,
                     ),
                   );
                 }

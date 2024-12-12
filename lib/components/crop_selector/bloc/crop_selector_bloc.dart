@@ -26,9 +26,15 @@ class CropSelectorBloc extends Bloc<CropSelectorEvent, CropSelectorState> {
     on<UpdateCropPosition>(_handleEvent);
     on<ResizeCropArea>(_handleEvent);
     on<SetAspectRatio>(_handleEvent);
+    on<StopCropActionEvent>(_handleEvent);
   }
 
   void _handleEvent(CropSelectorEvent event, Emitter<CropSelectorState> emit) {
+    print(event);
+    if (event is StopCropActionEvent) {
+      return;
+    }
+
     if (event is UpdateConstraintsEvent) {
       _cropTool.updateConstraints(event, emit, state);
     } else if (event is UpdateCropPosition) {

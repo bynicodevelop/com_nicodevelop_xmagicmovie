@@ -34,6 +34,8 @@ class ResizeCropArea extends CropSelectorEvent {
   List<Object> get props => [widthDelta, heightDelta, adjustX, adjustY];
 }
 
+class StopCropActionEvent extends CropSelectorEvent {}
+
 class SetAspectRatio extends CropSelectorEvent {
   final double aspectRatio;
 

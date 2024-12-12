@@ -12,11 +12,13 @@ class CropSelectorComponent extends StatefulWidget {
   final Widget Function(BuildContext) child;
   final double maxWidth;
   final double maxHeight;
+  final bool readOnly;
 
   const CropSelectorComponent({
     required this.child,
     required this.maxWidth,
     required this.maxHeight,
+    this.readOnly = false,
     super.key,
   });
 
@@ -50,20 +52,28 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
               left: state.cropX,
               top: state.cropY,
               child: GestureDetector(
-                onPanUpdate: (details) {
-                  context.read<CropSelectorBloc>().add(
-                        UpdateCropPosition(
-                          details.delta.dx,
-                          details.delta.dy,
-                        ),
-                      );
-                },
+                onPanUpdate: !widget.readOnly
+                    ? (details) {
+                        context.read<CropSelectorBloc>().add(
+                              UpdateCropPosition(
+                                details.delta.dx,
+                                details.delta.dy,
+                              ),
+                            );
+                      }
+                    : null,
                 child: Container(
                   width: state.cropWidth,
                   height: state.cropHeight,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red, width: 2),
-                    color: Colors.red.withOpacity(0.3),
+                    border: Border.all(
+                      color:
+                          widget.readOnly ? Colors.grey.shade500 : Colors.red,
+                      width: 2,
+                    ),
+                    color: widget.readOnly
+                        ? Colors.grey.shade500.withOpacity(0.2)
+                        : Colors.red.withOpacity(0.2),
                   ),
                   child: Hover(
                     builder: (context, isHover) {
@@ -79,45 +89,49 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
                                         Icons.photo_size_select_small_outlined,
                                     aspectRatio: 0,
                                     state: state,
-                                    onPressed: state.lockedAspectRatio != 0
-                                        ? () {
-                                            context
-                                                .read<CropSelectorBloc>()
-                                                .add(const SetAspectRatio(0));
-                                          }
+                                    onPressed: state.lockedAspectRatio != 0 &&
+                                            !widget.readOnly
+                                        ? () => context
+                                            .read<CropSelectorBloc>()
+                                            .add(const SetAspectRatio(0))
                                         : null,
                                   ),
                                   AspectRationButtonWidget(
                                     icon: Icons.crop_portrait,
                                     aspectRatio: 9 / 16,
                                     state: state,
-                                    onPressed: state.lockedAspectRatio != 9 / 16
-                                        ? () {
-                                            context
-                                                .read<CropSelectorBloc>()
-                                                .add(const SetAspectRatio(
-                                                    9 / 16));
-                                          }
-                                        : null,
+                                    onPressed:
+                                        state.lockedAspectRatio != 9 / 16 &&
+                                                !widget.readOnly
+                                            ? () {
+                                                context
+                                                    .read<CropSelectorBloc>()
+                                                    .add(const SetAspectRatio(
+                                                        9 / 16));
+                                              }
+                                            : null,
                                   ),
                                   AspectRationButtonWidget(
                                     icon: Icons.crop_landscape,
                                     aspectRatio: 16 / 9,
                                     state: state,
-                                    onPressed: state.lockedAspectRatio != 16 / 9
-                                        ? () {
-                                            context
-                                                .read<CropSelectorBloc>()
-                                                .add(const SetAspectRatio(
-                                                    16 / 9));
-                                          }
-                                        : null,
+                                    onPressed:
+                                        state.lockedAspectRatio != 16 / 9 &&
+                                                !widget.readOnly
+                                            ? () {
+                                                context
+                                                    .read<CropSelectorBloc>()
+                                                    .add(const SetAspectRatio(
+                                                        16 / 9));
+                                              }
+                                            : null,
                                   ),
                                   AspectRationButtonWidget(
                                     icon: Icons.crop_square,
                                     aspectRatio: 1,
                                     state: state,
-                                    onPressed: state.lockedAspectRatio != 1
+                                    onPressed: state.lockedAspectRatio != 1 &&
+                                            !widget.readOnly
                                         ? () {
                                             context
                                                 .read<CropSelectorBloc>()
@@ -132,6 +146,9 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
                             left: 0,
                             top: 0,
                             child: ResizeButtonWidget(
+                              onExit: () => context
+                                  .read<CropSelectorBloc>()
+                                  .add(StopCropActionEvent()),
                               onPanUpdate: (details) {
                                 context.read<CropSelectorBloc>().add(
                                       ResizeCropArea(
@@ -149,6 +166,9 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
                             right: 0,
                             top: 0,
                             child: ResizeButtonWidget(
+                              onExit: () => context
+                                  .read<CropSelectorBloc>()
+                                  .add(StopCropActionEvent()),
                               onPanUpdate: (details) {
                                 context.read<CropSelectorBloc>().add(
                                       ResizeCropArea(
@@ -166,6 +186,9 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
                             left: 0,
                             bottom: 0,
                             child: ResizeButtonWidget(
+                              onExit: () => context
+                                  .read<CropSelectorBloc>()
+                                  .add(StopCropActionEvent()),
                               onPanUpdate: (details) {
                                 context.read<CropSelectorBloc>().add(
                                       ResizeCropArea(
@@ -183,6 +206,9 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
                             right: 0,
                             bottom: 0,
                             child: ResizeButtonWidget(
+                              onExit: () => context
+                                  .read<CropSelectorBloc>()
+                                  .add(StopCropActionEvent()),
                               onPanUpdate: (details) {
                                 context.read<CropSelectorBloc>().add(
                                       ResizeCropArea(
