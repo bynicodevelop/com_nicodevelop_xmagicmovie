@@ -12,10 +12,10 @@ import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_ma
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/view_manager_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
-import 'package:com_nicodevelop_xmagicmovie/modals/loader/bloc/loader_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/modals/loader/loader_modal.dart';
-import 'package:com_nicodevelop_xmagicmovie/modals/notification/bloc/modal_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/modals/notification/notification_modal.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/bloc/loader_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/loader_modal.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';

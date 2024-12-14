@@ -1,7 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/modals/loader/bloc/loader_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/bloc/loader_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

@@ -1,5 +1,5 @@
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/modals/notification/bloc/modal_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
