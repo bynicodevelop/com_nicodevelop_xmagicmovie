@@ -19,6 +19,15 @@ class VideoDataModel extends Model {
     required this.size,
   });
 
+  factory VideoDataModel.empty() => VideoDataModel(
+        projectId: '',
+        name: '',
+        path: '',
+        uniqueFileName: '',
+        xfile: XFile(''),
+        size: SizeModel(0, 0),
+      );
+
   @override
   Map<String, dynamic> toJson() => {
         'projectId': projectId,

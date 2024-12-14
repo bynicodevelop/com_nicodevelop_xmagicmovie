@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:com_nicodevelop_xmagicmovie/widgets/buttons/button_crop_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_open_file/button_open_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/button_run_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/shared/run_status/run_status.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
@@ -22,20 +26,14 @@ class ToolComponent extends StatelessWidget {
             ),
             child: Row(
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.crop,
-                    color: isDisabled
-                        ? Colors.grey.shade600
-                        : state.isCropTool
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurface,
-                  ),
-                  onPressed: isDisabled
-                      ? null
-                      : () => context.read<ToolBloc>().add(
-                            OnCropToolEvent(),
-                          ),
+                ButtonOpenFileComponent(
+                  onPressed: (String link) => Process.run('open', [link]),
+                ),
+                ButtonCropComponent(
+                  readOnly: isDisabled,
+                  active: state.isCropTool,
+                  onPressed: () =>
+                      context.read<ToolBloc>().add(OnCropToolEvent()),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

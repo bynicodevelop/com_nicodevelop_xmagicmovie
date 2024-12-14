@@ -1,9 +1,11 @@
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:cross_file/cross_file.dart';
@@ -39,6 +41,16 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
 
               context.read<ProjectsBloc>().add(
                     const LoadProjects(),
+                  );
+
+              context.read<RunBloc>().add(
+                    OnResetEvent(
+                      VideoDataModel.empty(),
+                      SizeModel(0, 0),
+                      SizeModel(0, 0),
+                      CropModel.empty(),
+                      null,
+                    ),
                   );
               return;
             }

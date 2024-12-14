@@ -42,7 +42,7 @@ class VideoManager {
     );
   }
 
-  Future<void> cropVideo(
+  Future<String?> cropVideo(
     VideoDataModel file,
     SizeModel videoSize,
     CropModel crop,
@@ -92,6 +92,8 @@ class VideoManager {
       );
 
       await completer.future;
+
+      return outputPath;
     } catch (e) {
       throw Exception('Error while cropping video: $e');
     }

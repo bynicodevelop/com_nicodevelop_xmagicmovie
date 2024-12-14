@@ -21,7 +21,13 @@ final class RunInProgressState extends RunState {
   });
 }
 
-final class RunSuccessState extends RunState {}
+final class RunSuccessState extends RunState {
+  final String finalPath;
+
+  const RunSuccessState({
+    required this.finalPath,
+  });
+}
 
 class RunProgressUpdate extends RunState {
   final int progress;

@@ -113,6 +113,31 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
       ) as String);
 
   @override
+  String replaceFileExtension(
+    String? path,
+    String? newExtension,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #replaceFileExtension,
+          [
+            path,
+            newExtension,
+          ],
+        ),
+        returnValue: _i8.dummyValue<String>(
+          this,
+          Invocation.method(
+            #replaceFileExtension,
+            [
+              path,
+              newExtension,
+            ],
+          ),
+        ),
+      ) as String);
+
+  @override
   _i6.Future<Map<String, String>> generateUniqueFileName(_i7.XFile? file) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -260,7 +285,7 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
       ) as _i6.Future<_i4.SizeModel>);
 
   @override
-  _i6.Future<void> cropVideo(
+  _i6.Future<String?> cropVideo(
     _i5.VideoDataModel? file,
     _i4.SizeModel? videoSize,
     _i12.CropModel? crop,
@@ -276,9 +301,8 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
             onProgress,
           ],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i6.Future<String?>.value(),
+      ) as _i6.Future<String?>);
 
   @override
   _i6.Future<_i5.VideoDataModel> createVideoDataModel(

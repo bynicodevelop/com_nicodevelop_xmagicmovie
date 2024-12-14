@@ -73,6 +73,31 @@ class MockFileManager extends _i1.Mock implements _i3.FileManager {
       ) as String);
 
   @override
+  String replaceFileExtension(
+    String? path,
+    String? newExtension,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #replaceFileExtension,
+          [
+            path,
+            newExtension,
+          ],
+        ),
+        returnValue: _i6.dummyValue<String>(
+          this,
+          Invocation.method(
+            #replaceFileExtension,
+            [
+              path,
+              newExtension,
+            ],
+          ),
+        ),
+      ) as String);
+
+  @override
   _i4.Future<Map<String, String>> generateUniqueFileName(_i5.XFile? file) =>
       (super.noSuchMethod(
         Invocation.method(
