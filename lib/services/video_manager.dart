@@ -6,8 +6,7 @@ import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:cross_file/cross_file.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/statistics.dart';
+import 'package:ffmpeg_kit_flutter_min_gpl/ffmpeg_kit.dart';
 import 'package:flutter/material.dart';
 
 class VideoManager {
@@ -55,7 +54,7 @@ class VideoManager {
 
     // Définir un chemin pour le fichier de sortie
     final String outputPath =
-        '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}';
+        fileManager.replaceFileExtension('${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}', 'mp4');
 
     // File exists
     final File fileExists = File(outputPath);
@@ -65,7 +64,7 @@ class VideoManager {
 
     // Construire la commande FFmpeg pour recadrer la vidéo
     final String ffmpegCommand =
-        '-i "$inputPath" -filter:v "crop=${crop.cropWidth}:${crop.cropHeight}:${crop.cropX}:${crop.cropY}" -c:a copy "$outputPath"';
+        '-i "$inputPath" -filter:v "crop=${crop.cropWidth}:${crop.cropHeight}:${crop.cropX}:${crop.cropY}" -c:v libx264 -preset fast -c:a aac "$outputPath"';
 
     try {
       final completer = Completer<void>();
@@ -83,7 +82,7 @@ class VideoManager {
           }
         },
         null,
-        (Statistics statistics) {
+        (statistics) {
           final double currentTime = statistics.getTime();
           final int progress =
               ((currentTime / durationMs) * 100).clamp(0, 100).toInt();

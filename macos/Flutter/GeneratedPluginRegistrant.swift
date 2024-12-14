@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import desktop_drop
-import ffmpeg_kit_flutter
+import ffmpeg_kit_flutter_min_gpl
 import path_provider_foundation
 import video_player_avfoundation
 

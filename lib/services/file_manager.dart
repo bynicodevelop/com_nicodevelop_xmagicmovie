@@ -25,6 +25,15 @@ class FileManager {
     return file.path.split('/').last;
   }
 
+  String replaceFileExtension(
+    String path,
+    String newExtension,
+  ) {
+    final parts = path.split('.');
+    parts[parts.length - 1] = newExtension;
+    return parts.join('.');
+  }
+
   Future<Map<String, String>> generateUniqueFileName(XFile file) async {
     final String extension = file.path.split('.').last;
 
