@@ -30,7 +30,6 @@ class CropSelectorBloc extends Bloc<CropSelectorEvent, CropSelectorState> {
   }
 
   void _handleEvent(CropSelectorEvent event, Emitter<CropSelectorState> emit) {
-    print(event);
     if (event is StopCropActionEvent) {
       return;
     }
