@@ -53,8 +53,9 @@ class VideoManager {
     final double durationMs = await _getVideoDuration(inputPath);
 
     // Définir un chemin pour le fichier de sortie
-    final String outputPath =
-        fileManager.replaceFileExtension('${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}', 'mp4');
+    final String outputPath = fileManager.replaceFileExtension(
+        '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}',
+        'mp4');
 
     // File exists
     final File fileExists = File(outputPath);

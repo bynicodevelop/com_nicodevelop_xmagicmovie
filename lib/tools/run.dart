@@ -71,27 +71,33 @@ class Run {
       crop: event.crop,
     ));
 
-    final String? finalPath = await videoManager.cropVideo(
-      event.file,
-      event.fileSize,
-      event.finalCrop,
-      (progress) => emit(RunProgressUpdate(
-        progress: progress,
-      )),
-    );
+    try {
+      final String? finalPath = await videoManager.cropVideo(
+        event.file,
+        event.fileSize,
+        event.finalCrop,
+        (progress) => emit(RunProgressUpdate(
+          progress: progress,
+        )),
+      );
 
-    emit(const RunProgressUpdate(
-      progress: 100,
-    ));
+      emit(const RunProgressUpdate(
+        progress: 100,
+      ));
 
-    add(OnRunSuccess(
-      event.file,
-      event.fileSize,
-      event.videoSize,
-      event.crop,
-      event.finalCrop,
-      finalPath!,
-    ));
+      add(OnRunSuccess(
+        event.file,
+        event.fileSize,
+        event.videoSize,
+        event.crop,
+        event.finalCrop,
+        finalPath!,
+      ));
+    } catch (e) {
+      emit(RunFailureState(
+        error: e.toString(),
+      ));
+    }
   }
 
   void onRunSuccess(event, emit) {

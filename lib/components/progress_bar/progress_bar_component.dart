@@ -19,6 +19,10 @@ class _ProgressBarComponentState extends State<ProgressBarComponent> {
         if (state is RunProgressUpdate) {
           setState(() => _progress = state.progress);
         }
+
+        if (state is RunFailureState) {
+          setState(() => _progress = 0);
+        }
       },
       child: TweenAnimationBuilder<double>(
         tween: Tween<double>(

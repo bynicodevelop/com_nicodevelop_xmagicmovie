@@ -20,6 +20,7 @@ class ModalBloc extends Bloc<ModalEvent, ModalState> {
         isModalOpen: true,
         title: event.title,
         message: event.message,
+        type: event.type,
       ));
 
       _closeTimer = Timer(

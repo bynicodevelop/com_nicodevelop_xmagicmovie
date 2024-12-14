@@ -41,3 +41,16 @@ class RunProgressUpdate extends RunState {
         progress,
       ];
 }
+
+class RunFailureState extends RunState {
+  final String error;
+
+  const RunFailureState({
+    required this.error,
+  });
+
+  @override
+  List<Object> get props => [
+        error,
+      ];
+}

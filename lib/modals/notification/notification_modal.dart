@@ -7,6 +7,7 @@ class NotificationModal extends StatelessWidget {
   const NotificationModal({super.key});
 
   IconData _typeIcon(ModalType type) {
+    print(type);
     switch (type) {
       case ModalType.success:
         return Icons.check_circle;
