@@ -37,6 +37,9 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
             widget.maxHeight,
           ),
         );
+    context.read<CropSelectorBloc>().add(
+          const UpdateCropPosition(0, 0),
+        );
   }
 
   @override

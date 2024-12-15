@@ -20,8 +20,8 @@ class UpdateCropPosition extends CropSelectorEvent {
 class ResizeCropArea extends CropSelectorEvent {
   final double widthDelta;
   final double heightDelta;
-  final bool adjustX; // Si vrai, ajuste `cropX`
-  final bool adjustY; // Si vrai, ajuste `cropY`
+  final bool adjustX;
+  final bool adjustY;
 
   const ResizeCropArea(
     this.widthDelta,

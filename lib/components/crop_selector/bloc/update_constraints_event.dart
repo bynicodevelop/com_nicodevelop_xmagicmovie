@@ -9,6 +9,16 @@ class UpdateConstraintsEvent extends CropSelectorEvent {
     this.maxHeight,
   );
 
+  UpdateConstraintsEvent copyWith({
+    double? maxWidth,
+    double? maxHeight,
+  }) {
+    return UpdateConstraintsEvent(
+      maxWidth ?? this.maxWidth,
+      maxHeight ?? this.maxHeight,
+    );
+  }
+
   @override
   List<Object> get props => [
         maxWidth,
