@@ -4,6 +4,10 @@ import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bl
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/bloc/loader_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/loader_modal.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
@@ -12,10 +16,6 @@ import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_ma
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/view_manager_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/bloc/loader_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/loader_modal.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
@@ -144,6 +144,9 @@ class App extends StatelessWidget {
                 videoManager,
               ),
             ),
+          ),
+          RepositoryProvider<VideoManager>.value(
+            value: videoManager,
           ),
         ],
         child: const HomePage(),

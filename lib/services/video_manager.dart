@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
@@ -42,6 +43,63 @@ class VideoManager {
     );
   }
 
+  Future<Uint8List?> extractThumbnail({
+    required String projectId,
+    required String sourceFileName,
+  }) async {
+    try {
+      final Directory workingDir = await fileManager.getWorkingDirectory();
+      final String videoPath = '${workingDir.path}/$projectId/$sourceFileName';
+      final String thumbnailPath =
+          '${workingDir.path}/$projectId/thumbnail.png';
+
+      print('Chemin de la vidéo : $videoPath');
+      print('Chemin de la miniature : $thumbnailPath');
+
+      if (!File(videoPath).existsSync()) {
+        print(
+            'Erreur : Le fichier vidéo n\'existe pas à ce chemin : $videoPath');
+        return null;
+      }
+
+      // Vérifier si la miniature existe déjà
+      final File thumbnailFile = File(thumbnailPath);
+      if (thumbnailFile.existsSync()) {
+        debugPrint('La miniature existe déjà. Chargement du fichier existant.');
+        return await thumbnailFile.readAsBytes();
+      }
+
+      // Commande FFmpeg pour extraire une image (première frame) de la vidéo
+      final String ffmpegCommand =
+          '-i "$videoPath" -vf "thumbnail" -frames:v 1 "$thumbnailPath"';
+
+      final completer = Completer<Uint8List?>();
+
+      await FFmpegKit.executeAsync(ffmpegCommand, (session) async {
+        final returnCode = await session.getReturnCode();
+
+        if (returnCode != null && returnCode.isValueSuccess()) {
+          if (await thumbnailFile.exists()) {
+            final Uint8List bytes = await thumbnailFile.readAsBytes();
+            completer.complete(bytes);
+          } else {
+            debugPrint('Erreur : Le fichier miniature n\'a pas été créé.');
+            completer.complete(null);
+          }
+        } else {
+          final String? error = await session.getOutput();
+          debugPrint('Erreur FFmpeg : $error');
+          completer.complete(null);
+        }
+      });
+
+      return completer.future;
+    } catch (e) {
+      debugPrint('Erreur lors de l\'extraction du thumbnail avec FFmpeg : $e');
+      return null;
+    }
+  }
+
   Future<String?> cropVideo(
     VideoDataModel file,
     SizeModel videoSize,
@@ -52,18 +110,15 @@ class VideoManager {
     final String inputPath = file.path;
     final double durationMs = await _getVideoDuration(inputPath);
 
-    // Définir un chemin pour le fichier de sortie
     final String outputPath = fileManager.replaceFileExtension(
         '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}',
         'mp4');
 
-    // File exists
     final File fileExists = File(outputPath);
     if (fileExists.existsSync()) {
       fileExists.deleteSync();
     }
 
-    // Construire la commande FFmpeg pour recadrer la vidéo
     final String ffmpegCommand =
         '-i "$inputPath" -filter:v "crop=${crop.cropWidth}:${crop.cropHeight}:${crop.cropX}:${crop.cropY}" -c:v libx264 -preset fast -c:a aac "$outputPath"';
 
@@ -111,8 +166,7 @@ class VideoManager {
       final int hours = int.parse(match.group(1)!);
       final int minutes = int.parse(match.group(2)!);
       final double seconds = double.parse(match.group(3)!);
-      return ((hours * 3600) + (minutes * 60) + seconds) *
-          1000; // Convertir en ms
+      return ((hours * 3600) + (minutes * 60) + seconds) * 1000;
     } else {
       throw Exception('Unable to get video duration');
     }

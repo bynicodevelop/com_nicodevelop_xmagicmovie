@@ -14,8 +14,6 @@ class NotificationModal extends StatelessWidget {
         return Icons.warning;
       case ModalType.error:
         return Icons.error;
-      default:
-        return Icons.check_circle;
     }
   }
 
@@ -27,8 +25,6 @@ class NotificationModal extends StatelessWidget {
         return Colors.amber.shade600;
       case ModalType.error:
         return ThemeData().colorScheme.error;
-      default:
-        return Colors.green.shade600;
     }
   }
 

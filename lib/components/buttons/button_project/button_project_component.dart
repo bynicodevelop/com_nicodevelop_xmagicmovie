@@ -4,6 +4,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bl
 import 'package:com_nicodevelop_xmagicmovie/components/shared/hover/hover.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/video_thumbnail/video_thumbnail_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:flutter/material.dart';
@@ -47,28 +48,35 @@ class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
                     ),
                   );
             },
-            child: Stack(
-              children: [
-                if (isHover)
-                  Positioned(
-                    top: kDefaultPadding,
-                    right: kDefaultPadding,
-                    child: ButtonDeleteProjectComponent(
-                      callback: () => context.read<ProjectDeletionBloc>().add(
-                            OnDeleteProject(
-                              widget.config.projectId,
-                            ),
-                          ),
+            child: Hover(
+              builder: (context, isHover) {
+                return Stack(
+                  children: [
+                    VideoThumbnailComponent(
+                      config: widget.config,
                     ),
-                  ),
-                Center(
-                  child: Icon(
-                    Icons.movie_rounded,
-                    size: 50,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ],
+                    if (isHover)
+                      Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Colors.grey.shade300.withAlpha((0.5 * 255).toInt()),
+                      ),
+                    if (isHover)
+                      Positioned(
+                        top: kDefaultPadding,
+                        right: kDefaultPadding,
+                        child: ButtonDeleteProjectComponent(
+                          callback: () =>
+                              context.read<ProjectDeletionBloc>().add(
+                                    OnDeleteProject(
+                                      widget.config.projectId,
+                                    ),
+                                  ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
           ),
         ),
