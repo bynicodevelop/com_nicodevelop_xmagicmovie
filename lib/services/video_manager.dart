@@ -97,6 +97,23 @@ class VideoManager {
     }
   }
 
+  Future<String?> getCoppedVideoPath(
+    String projectId,
+    String sourceFileName,
+  ) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
+    final String croppedVideoPath =
+        '${workingDir.path}/$projectId/cropped_$sourceFileName';
+
+    if (!File(croppedVideoPath).existsSync()) {
+      debugPrint(
+          'Erreur : Le fichier vidéo n\'existe pas à ce chemin : $croppedVideoPath');
+      return null;
+    }
+
+    return croppedVideoPath;
+  }
+
   Future<String?> cropVideo(
     VideoDataModel file,
     SizeModel videoSize,

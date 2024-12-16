@@ -52,6 +52,7 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
                       null,
                     ),
                   );
+
               return;
             }
 

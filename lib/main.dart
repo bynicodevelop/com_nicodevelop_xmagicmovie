@@ -1,5 +1,6 @@
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_new/button_new_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_open_file/bloc/open_file_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
@@ -143,6 +144,11 @@ class App extends StatelessWidget {
                 configService,
                 videoManager,
               ),
+            ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => OpenFileBloc(
+              videoManager: videoManager,
             ),
           ),
           RepositoryProvider<VideoManager>.value(

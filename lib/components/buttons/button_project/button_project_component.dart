@@ -1,5 +1,6 @@
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/button_delete_project_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_open_file/bloc/open_file_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/shared/hover/hover.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
@@ -27,6 +28,8 @@ class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
   Widget build(BuildContext context) {
     return BlocListener<ProjectBloc, ProjectState>(
       listener: (context, state) {
+        if (state.videoDataModel.projectId != widget.config.projectId) return;
+
         context.read<VideoBloc>().add(
               InitializeVideo(
                 state.videoDataModel,
@@ -35,6 +38,12 @@ class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
 
         context.read<ToolBloc>().add(
               OnInitializeToolEvent(),
+            );
+
+        context.read<OpenFileBloc>().add(
+              OnOpenFileEventOpen(
+                config: widget.config,
+              ),
             );
       },
       child: Hover(
@@ -59,7 +68,9 @@ class _ButtonProjectComponentState extends State<ButtonProjectComponent> {
                       Container(
                         height: double.infinity,
                         width: double.infinity,
-                        color: Colors.grey.shade300.withAlpha((0.5 * 255).toInt()),
+                        color: Colors.grey.shade300.withAlpha(
+                          (0.5 * 255).toInt(),
+                        ),
                       ),
                     if (isHover)
                       Positioned(
