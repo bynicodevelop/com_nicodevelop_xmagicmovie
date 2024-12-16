@@ -39,6 +39,8 @@ class Project {
   }
 
   Future<void> loadProject(event, emit, state) async {
+    var lastUpdated = DateTime.now();
+
     try {
       final videoDataModel = await videoManager.createVideoDataModel(
         event.config.projectId,
@@ -46,15 +48,14 @@ class Project {
       );
 
       emit(state.copyWith(
-        lastUpdated: DateTime.now(),
         videoDataModel: videoDataModel,
+        lastUpdated: lastUpdated,
       ));
     } catch (e) {
-      emit(
-        state.copyWith(
-          videoDataModel: null,
-        ),
-      );
+      emit(state.copyWith(
+        videoDataModel: null,
+        lastUpdated: lastUpdated,
+      ));
     }
   }
 

@@ -53,11 +53,8 @@ class VideoManager {
       final String thumbnailPath =
           '${workingDir.path}/$projectId/thumbnail.png';
 
-      print('Chemin de la vidéo : $videoPath');
-      print('Chemin de la miniature : $thumbnailPath');
-
       if (!File(videoPath).existsSync()) {
-        print(
+        debugPrint(
             'Erreur : Le fichier vidéo n\'existe pas à ce chemin : $videoPath');
         return null;
       }
