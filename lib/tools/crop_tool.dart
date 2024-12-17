@@ -20,35 +20,53 @@ class CropTool {
     ));
   }
 
-  resizeCropArea(event, emit, state) {
-    double newWidth = state.cropWidth +
-        (event.adjustX ? -event.widthDelta : event.widthDelta);
-    double newHeight = state.cropHeight +
-        (event.adjustY ? -event.heightDelta : event.heightDelta);
+  void resizeCropArea(event, emit, state) {
+    double newWidth = state.cropWidth;
+    double newHeight = state.cropHeight;
+    double newX = state.cropX;
+    double newY = state.cropY;
 
-    if (state.lockedAspectRatio != 0) {
-      if (event.adjustX && !event.adjustY) {
-        newHeight = newWidth / state.lockedAspectRatio!;
-      } else if (event.adjustY && !event.adjustX) {
-        newWidth = newHeight * state.lockedAspectRatio!;
-      } else if (event.adjustX && event.adjustY) {
-        newHeight = newWidth / state.lockedAspectRatio!;
-      }
+    // Redimensionner depuis le coin supérieur-gauche
+    if (event.adjustX && event.adjustY) {
+      newWidth = (state.cropWidth - event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight - event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+      newX = (state.cropX + event.widthDelta)
+          .clamp(0.0, state.maxWidth - newWidth);
+      newY = (state.cropY + event.heightDelta)
+          .clamp(0.0, state.maxHeight - newHeight);
     }
 
-    newWidth = newWidth.clamp(state.minCropWidth, state.maxWidth - state.cropX)
-        as double;
-    newHeight = newHeight.clamp(
-        state.minCropHeight, state.maxHeight - state.cropY) as double;
+    // Redimensionner depuis le coin supérieur-droit
+    else if (!event.adjustX && event.adjustY) {
+      newWidth = (state.cropWidth + event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight - event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+      newY = (state.cropY + event.heightDelta)
+          .clamp(0.0, state.maxHeight - newHeight);
+    }
 
-    final newX = event.adjustX
-        ? (state.cropX + event.widthDelta).clamp(0.0, state.maxWidth - newWidth)
-        : state.cropX;
-    final newY = event.adjustY
-        ? (state.cropY + event.heightDelta)
-            .clamp(0.0, state.maxHeight - newHeight)
-        : state.cropY;
+    // Redimensionner depuis le coin inférieur-gauche
+    else if (event.adjustX && !event.adjustY) {
+      newWidth = (state.cropWidth - event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight + event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+      newX = (state.cropX + event.widthDelta)
+          .clamp(0.0, state.maxWidth - newWidth);
+    }
 
+    // Redimensionner depuis le coin inférieur-droit
+    else if (!event.adjustX && !event.adjustY) {
+      newWidth = (state.cropWidth + event.widthDelta)
+          .clamp(state.minCropWidth, state.maxWidth - state.cropX);
+      newHeight = (state.cropHeight + event.heightDelta)
+          .clamp(state.minCropHeight, state.maxHeight - state.cropY);
+    }
+
+    // Émettre le nouvel état avec les valeurs mises à jour
     emit(state.copyWith(
       cropWidth: newWidth,
       cropHeight: newHeight,

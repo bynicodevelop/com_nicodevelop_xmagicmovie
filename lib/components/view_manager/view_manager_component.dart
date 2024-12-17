@@ -1,8 +1,13 @@
-import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
-import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,20 +23,75 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
   final PageController _pageController = PageController();
 
   @override
-  void initState() {
-    super.initState();
-
-    FileManager.getFilePath('f9186b9df6a1d0305b0d05610a8f53ef.mp4')
-        .then((path) {
-      context.read<UploadBloc>().add(UploadFileEvent([XFile(path)]));
-      context.read<VideoBloc>().add(InitializeVideo(XFile(path)));
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<VideoBloc, VideoState>(
+          listener: (context, state) {
+            if (state is PlayerReset) {
+              context.read<ViewManagerBloc>().add(
+                    const ViewManagerEvent(
+                      kUploadView,
+                    ),
+                  );
+
+              context.read<ToolBloc>().add(
+                    OnResetToolEvent(),
+                  );
+
+              context.read<ProjectsBloc>().add(
+                    const LoadProjects(),
+                  );
+
+              context.read<RunBloc>().add(
+                    OnResetEvent(
+                      VideoDataModel.empty(),
+                      SizeModel(0, 0),
+                      SizeModel(0, 0),
+                      CropModel.empty(),
+                      null,
+                    ),
+                  );
+
+              return;
+            }
+
+            if (state is PlayerInitial) {
+              context.read<ViewManagerBloc>().add(
+                    const ViewManagerEvent(
+                      kCropSelectorView,
+                    ),
+                  );
+
+              context.read<ToolBloc>().add(
+                    OnInitializeToolEvent(),
+                  );
+              return;
+            }
+          },
+        ),
+        BlocListener<UploadBloc, UploadState>(
+          listener: (context, state) {
+            if (state is UploadSuccess && state.files.isNotEmpty) {
+              context.read<VideoBloc>().add(
+                    InitializeVideo(
+                      VideoDataModel(
+                        projectId: '',
+                        name: state.files.first.name,
+                        path: state.files.first.path,
+                        uniqueFileName: '',
+                        xfile: XFile(state.files.first.path),
+                        size: SizeModel(0, 0),
+                      ),
+                    ),
+                  );
+
+              context.read<ToolBloc>().add(
+                    OnInitializeToolEvent(),
+                  );
+            }
+          },
+        ),
         BlocListener<ViewManagerBloc, ViewManagerState>(
           listener: (context, state) {
             if (state.viewName.isNotEmpty) {
@@ -43,17 +103,6 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
                   _pageController.jumpToPage(targetPage);
                 }
               });
-            }
-          },
-        ),
-        BlocListener<UploadBloc, UploadState>(
-          listener: (context, state) {
-            if (state.files.isNotEmpty) {
-              context.read<ViewManagerBloc>().add(
-                    const ViewManagerEvent(
-                      kCropSelectorView,
-                    ),
-                  );
             }
           },
         ),

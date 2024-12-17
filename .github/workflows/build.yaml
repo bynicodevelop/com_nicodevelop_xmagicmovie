@@ -1,0 +1,40 @@
+name: Run Tests
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - run: flutter --version
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate mocks
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build macOS app
+        run: flutter build macos --release
+
+      - name: Make macOS app executable
+        run: chmod -R +x build/macos/Build/Products/Release/*.app
+
+      - name: Upload macOS build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: macOS-app
+          path: build/macos/Build/Products/Release/*.app

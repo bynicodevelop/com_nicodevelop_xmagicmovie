@@ -1,4 +1,7 @@
-import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/list_projet/list_projet_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/progress_bar/progress_bar_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/shared/run_status/run_status.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
 import 'package:flutter/material.dart';
@@ -21,61 +24,80 @@ const String kCropTool = 'CropTool';
 /// Gestion du style
 const double kDefaultPadding = 8.0;
 
+/// Modal
+const int kDefaultCloseDuration = 5;
+
 Map<String, Widget> kListView = {
-  kUploadView: Scaffold(
-    appBar: AppBar(
-      actions: const [
-        ToolComponent(),
-      ],
-    ),
-    body: BlocBuilder<VideoBloc, VideoState>(
-      builder: (context, state) {
-        if (!state.isInitialized || state.controller == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final VideoPlayerController controller = state.controller!;
-        final double aspectRatio = controller.value.aspectRatio;
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            VideoComponent(
-              controller: controller,
-              aspectRatio: aspectRatio,
-            ),
-          ],
-        );
-      },
+  kUploadView: const SingleChildScrollView(
+    child: Padding(
+      padding: EdgeInsets.all(
+        kDefaultPadding * 3,
+      ),
+      child: Wrap(
+        runSpacing: kDefaultPadding * 3,
+        children: [
+          UploadFileComponent(),
+          ListProjectComponent(),
+        ],
+      ),
     ),
   ),
-  kCropSelectorView: Scaffold(
-    appBar: AppBar(
-      actions: const [
-        ToolComponent(),
-      ],
-    ),
-    body: BlocBuilder<VideoBloc, VideoState>(
-      builder: (context, state) {
-        if (!state.isInitialized || state.controller == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final VideoPlayerController controller = state.controller!;
-        final double aspectRatio = controller.value.aspectRatio;
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            VideoComponent(
-              controller: controller,
-              aspectRatio: aspectRatio,
-            ),
-          ],
+  kCropSelectorView: BlocBuilder<VideoBloc, VideoState>(
+    builder: (context, state) {
+      if (!state.isInitialized || state.controller == null) {
+        return const Center(
+          child: CircularProgressIndicator(),
         );
-      },
-    ),
+      }
+
+      final VideoPlayerController controller = state.controller!;
+      final double aspectRatio = controller.value.aspectRatio;
+      final bool isPlaying = state.isPlaying;
+
+      return RunStatus(
+        builder: (context, isLoading) {
+          return Column(
+            children: [
+              const ProgressBarComponent(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  VideoComponent(
+                    controller: controller,
+                    aspectRatio: aspectRatio,
+                    readOnly: isLoading,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: kDefaultPadding,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<VideoBloc>().add(
+                              !isPlaying
+                                  ? const OnPlayEvent()
+                                  : const OnPauseEvent(),
+                            );
+                      },
+                      icon: Icon(
+                        !isPlaying
+                            ? Icons.play_arrow_rounded
+                            : Icons.pause_rounded,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    },
   ),
 };

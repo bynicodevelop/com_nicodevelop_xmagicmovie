@@ -13,6 +13,13 @@ class CropModel extends Model {
     required this.cropHeight,
   });
 
+  factory CropModel.empty() => CropModel(
+        cropX: 0,
+        cropY: 0,
+        cropWidth: 0,
+        cropHeight: 0,
+      );
+
   @override
   Map<String, dynamic> toJson() {
     return {

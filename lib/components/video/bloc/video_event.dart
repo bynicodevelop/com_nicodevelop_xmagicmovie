@@ -8,12 +8,20 @@ sealed class VideoEvent extends Equatable {
 }
 
 class InitializeVideo extends VideoEvent {
-  final XFile file;
+  final VideoDataModel videoDataModel;
 
-  const InitializeVideo(this.file);
+  const InitializeVideo(
+    this.videoDataModel,
+  );
 
   @override
-  List<Object> get props => [file];
+  List<Object> get props => [
+        videoDataModel,
+      ];
+}
+
+class OnResetVideoEvent extends VideoEvent {
+  const OnResetVideoEvent();
 }
 
 class UpdateConstraintsEvent extends VideoEvent {
@@ -27,4 +35,12 @@ class UpdateConstraintsEvent extends VideoEvent {
 
   @override
   List<Object> get props => [maxWidth, maxHeight];
+}
+
+class OnPlayEvent extends VideoEvent {
+  const OnPlayEvent();
+}
+
+class OnPauseEvent extends VideoEvent {
+  const OnPauseEvent();
 }

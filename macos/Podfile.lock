@@ -1,12 +1,12 @@
 PODS:
   - desktop_drop (0.0.1):
     - FlutterMacOS
-  - ffmpeg-kit-macos-https (6.0)
-  - ffmpeg_kit_flutter (6.0.3):
-    - ffmpeg_kit_flutter/https (= 6.0.3)
+  - ffmpeg-kit-macos-min-gpl (6.0)
+  - ffmpeg_kit_flutter_min_gpl (6.0.3):
+    - ffmpeg_kit_flutter_min_gpl/min-gpl (= 6.0.3)
     - FlutterMacOS
-  - ffmpeg_kit_flutter/https (6.0.3):
-    - ffmpeg-kit-macos-https (= 6.0)
+  - ffmpeg_kit_flutter_min_gpl/min-gpl (6.0.3):
+    - ffmpeg-kit-macos-min-gpl (= 6.0)
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - path_provider_foundation (0.0.1):
@@ -18,20 +18,20 @@ PODS:
 
 DEPENDENCIES:
   - desktop_drop (from `Flutter/ephemeral/.symlinks/plugins/desktop_drop/macos`)
-  - ffmpeg_kit_flutter (from `Flutter/ephemeral/.symlinks/plugins/ffmpeg_kit_flutter/macos`)
+  - ffmpeg_kit_flutter_min_gpl (from `Flutter/ephemeral/.symlinks/plugins/ffmpeg_kit_flutter_min_gpl/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - video_player_avfoundation (from `Flutter/ephemeral/.symlinks/plugins/video_player_avfoundation/darwin`)
 
 SPEC REPOS:
   trunk:
-    - ffmpeg-kit-macos-https
+    - ffmpeg-kit-macos-min-gpl
 
 EXTERNAL SOURCES:
   desktop_drop:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_drop/macos
-  ffmpeg_kit_flutter:
-    :path: Flutter/ephemeral/.symlinks/plugins/ffmpeg_kit_flutter/macos
+  ffmpeg_kit_flutter_min_gpl:
+    :path: Flutter/ephemeral/.symlinks/plugins/ffmpeg_kit_flutter_min_gpl/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   path_provider_foundation:
@@ -41,8 +41,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   desktop_drop: 69eeff437544aa619c8db7f4481b3a65f7696898
-  ffmpeg-kit-macos-https: 60de703db964ccca7fd0d4d1611f4c102a8139cc
-  ffmpeg_kit_flutter: 5bd75928cf88ec177cea410b027681e4bfe09452
+  ffmpeg-kit-macos-min-gpl: df4686a84c9a6d4660a4232611affda008002a8d
+  ffmpeg_kit_flutter_min_gpl: 11430b8c2485665070df8fd84fcafe444ee390bb
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3

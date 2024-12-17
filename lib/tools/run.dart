@@ -1,27 +1,18 @@
-import 'package:bloc/bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
-import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
-import 'package:cross_file/cross_file.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-part 'run_event.dart';
-part 'run_state.dart';
+class Run {
+  final VideoManager videoManager;
 
-class RunBloc extends Bloc<RunEvent, RunState> {
-  final VideoManager _videoManager;
+  const Run({
+    required this.videoManager,
+  });
 
-  RunBloc(
-    this._videoManager,
-  ) : super(RunInitial()) {
-    on<OnRunEvent>(_runEvent);
-    on<OnRunInProgress>(_onRunInProgress);
-    on<OnRunSuccess>(_onRunSuccess);
-  }
-
-  void _runEvent(event, emit) {
-    emit(RunInitial());
+  runEvent(event, emit, state, Function add) {
+    emit(RunInitialState());
 
     // Afficher les données initiales pour vérification
     debugPrint("File Size (Base): ${event.fileSize.toJson()}");
@@ -37,7 +28,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       throw Exception('File size width or height (Base) cannot be zero.');
     }
 
-    final XFile file = event.file;
+    final VideoDataModel file = event.file;
 
     // Calculer les ratios d'échelle entre la vidéo UX et la vidéo réelle
     final double scaleX = event.fileSize.width / event.videoSize.width;
@@ -73,29 +64,49 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     ));
   }
 
-  Future<void> _onRunInProgress(event, emit) async {
-    emit(RunInProgress(
+  Future<void> onRunInProgress(event, emit, state, add) async {
+    emit(RunInProgressState(
       file: event.file,
       videoSize: event.videoSize,
       crop: event.crop,
     ));
 
-    await _videoManager.cropVideo(
-      event.file,
-      event.fileSize,
-      event.finalCrop,
-    );
+    try {
+      final String? finalPath = await videoManager.cropVideo(
+        event.file,
+        event.fileSize,
+        event.finalCrop,
+        (progress) => emit(RunProgressUpdate(
+          progress: progress,
+        )),
+      );
 
-    add(OnRunSuccess(
-      event.file,
-      event.fileSize,
-      event.videoSize,
-      event.crop,
-      event.finalCrop,
+      emit(const RunProgressUpdate(
+        progress: 100,
+      ));
+
+      add(OnRunSuccess(
+        event.file,
+        event.fileSize,
+        event.videoSize,
+        event.crop,
+        event.finalCrop,
+        finalPath!,
+      ));
+    } catch (e) {
+      emit(RunFailureState(
+        error: e.toString(),
+      ));
+    }
+  }
+
+  void onRunSuccess(event, emit) {
+    emit(RunSuccessState(
+      finalPath: event.finalPath,
     ));
   }
 
-  void _onRunSuccess(event, emit) {
-    emit(RunSuccess());
+  void onReset(event, emit) {
+    emit(RunInitialState());
   }
 }

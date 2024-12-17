@@ -3,6 +3,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/model.dart';
 
 class VideoDataModel extends Model {
+  final String projectId;
   final String name;
   final String path;
   final String uniqueFileName;
@@ -10,6 +11,7 @@ class VideoDataModel extends Model {
   final SizeModel size;
 
   VideoDataModel({
+    required this.projectId,
     required this.name,
     required this.path,
     required this.uniqueFileName,
@@ -17,8 +19,18 @@ class VideoDataModel extends Model {
     required this.size,
   });
 
+  factory VideoDataModel.empty() => VideoDataModel(
+        projectId: '',
+        name: '',
+        path: '',
+        uniqueFileName: '',
+        xfile: XFile(''),
+        size: SizeModel(0, 0),
+      );
+
   @override
   Map<String, dynamic> toJson() => {
+        'projectId': projectId,
         'name': name,
         'path': path,
         'uniqueFileName': uniqueFileName,

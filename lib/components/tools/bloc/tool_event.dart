@@ -7,6 +7,10 @@ sealed class ToolEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class OnResetToolEvent extends ToolEvent {}
+
+class OnInitializeToolEvent extends ToolEvent {}
+
 class OnPlayerToolEvent extends ToolEvent {}
 
 class OnCropToolEvent extends ToolEvent {}
