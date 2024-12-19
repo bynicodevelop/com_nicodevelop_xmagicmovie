@@ -15,6 +15,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_b
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/view_manager_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/zoom/bloc/zoom_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
@@ -150,6 +151,9 @@ class App extends StatelessWidget {
             create: (BuildContext context) => OpenFileBloc(
               videoManager: videoManager,
             ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ZoomBloc(),
           ),
           RepositoryProvider<VideoManager>.value(
             value: videoManager,

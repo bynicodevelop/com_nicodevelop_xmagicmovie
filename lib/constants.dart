@@ -4,6 +4,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/shared/run_status/run_sta
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/zoom/zoom_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
@@ -91,6 +92,7 @@ Map<String, Widget> kListView = {
                             : Icons.pause_rounded,
                       ),
                     ),
+                    const ZoomComponent()
                   ],
                 ),
               ),
