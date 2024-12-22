@@ -116,25 +116,82 @@ class VideoManager {
 
   Future<String?> cropVideo(
     VideoDataModel file,
-    SizeModel videoSize,
-    CropModel crop,
+    SizeModel stageSize, // Taille du stage (zone visible)
+    CropModel crop, // Coordonnées de crop relatives au stage
+    double zoomScale, // Zoom/dézoom de la vidéo
     void Function(int) onProgress,
   ) async {
+    print("zoomScale: $zoomScale");
+
     final Directory workingDir = await fileManager.getWorkingDirectory();
     final String inputPath = file.path;
     final double durationMs = await _getVideoDuration(inputPath);
 
     final String outputPath = fileManager.replaceFileExtension(
-        '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}',
-        'mp4');
+      '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}',
+      'mp4',
+    );
 
     final File fileExists = File(outputPath);
     if (fileExists.existsSync()) {
       fileExists.deleteSync();
     }
 
+    // Convertir zoomScale en facteur d'échelle pour le dézoom
+    final double scaleFactor = 1 + (zoomScale / 100);
+    print("scaleFactor: $scaleFactor");
+
+    // Calcul des dimensions après dézoom/zoom
+    int scaledWidth = (stageSize.width * scaleFactor).round();
+    int scaledHeight = (stageSize.height * scaleFactor).round();
+
+    // Aligner sur des multiples de 2 pour éviter les problèmes avec FFmpeg
+    scaledWidth = (scaledWidth / 2).floor() * 2;
+    scaledHeight = (scaledHeight / 2).floor() * 2;
+
+    print("Scaled Width: $scaledWidth, Scaled Height: $scaledHeight");
+
+    // Calcul du padding pour centrer la vidéo dézoomée dans le stage
+    int offsetX = ((stageSize.width - scaledWidth) / 2).round();
+    int offsetY = ((stageSize.height - scaledHeight) / 2).round();
+
+    // Aligner les offsets sur des multiples de 2
+    offsetX = (offsetX / 2).floor() * 2;
+    offsetY = (offsetY / 2).floor() * 2;
+
+    print("OffsetX: $offsetX, OffsetY: $offsetY");
+
+    // Recalculer les coordonnées du crop en fonction du padding et du facteur d'échelle
+    int adjustedCropX = ((crop.cropX - offsetX) / scaleFactor)
+        .clamp(0, scaledWidth - 1)
+        .round();
+    int adjustedCropY = ((crop.cropY - offsetY) / scaleFactor)
+        .clamp(0, scaledHeight - 1)
+        .round();
+
+    // Les dimensions du crop doivent également être adaptées au facteur d'échelle
+    int cropWidth = (crop.cropWidth / scaleFactor)
+        .clamp(1, scaledWidth - adjustedCropX)
+        .round();
+    int cropHeight = (crop.cropHeight / scaleFactor)
+        .clamp(1, scaledHeight - adjustedCropY)
+        .round();
+
+    // Aligner les dimensions du crop sur des multiples de 2
+    cropWidth = (cropWidth / 2).floor() * 2;
+    cropHeight = (cropHeight / 2).floor() * 2;
+
+    print(
+        "Adjusted CropX: $adjustedCropX, CropY: $adjustedCropY, CropWidth: $cropWidth, CropHeight: $cropHeight");
+
+    // Construction du filtre FFmpeg avec centrage explicite
+    final String filter =
+        'scale=$scaledWidth:$scaledHeight, pad=${stageSize.width}:${stageSize.height}:(ow-iw)/2:(oh-ih)/2, crop=$cropWidth:$cropHeight:$adjustedCropX:$adjustedCropY';
+
     final String ffmpegCommand =
-        '-i "$inputPath" -filter:v "crop=${crop.cropWidth}:${crop.cropHeight}:${crop.cropX}:${crop.cropY}" -c:v libx264 -preset fast -c:a aac "$outputPath"';
+        '-i "$inputPath" -filter_complex "$filter" -c:v libx264 -preset fast -c:a aac "$outputPath"';
+
+    print(ffmpegCommand);
 
     try {
       final completer = Completer<void>();

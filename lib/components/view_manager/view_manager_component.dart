@@ -50,6 +50,7 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
                       SizeModel(0, 0),
                       CropModel.empty(),
                       null,
+                      0,
                     ),
                   );
 

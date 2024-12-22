@@ -5,6 +5,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_s
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/zoom/bloc/zoom_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
@@ -69,12 +70,14 @@ class ButtonRunComponent extends StatelessWidget {
 
                 /// récupère les données de la vidéo (pour la taille)
                 final VideoState videoState = context.read<VideoBloc>().state;
-
+                final double zoomScale =
+                    (context.read<ZoomBloc>().state as ZoomInitialState).value;
                 final SizeModel fileSize = videoDataModel.size;
                 final SizeModel videoSize = SizeModel(
                   videoState.maxWidth,
                   videoState.maxHeight,
                 );
+
                 final CropModel crop = _getCropModel(
                   context,
                 );
@@ -86,6 +89,7 @@ class ButtonRunComponent extends StatelessWidget {
                         videoSize,
                         crop,
                         null,
+                        zoomScale,
                       ),
                     );
               },

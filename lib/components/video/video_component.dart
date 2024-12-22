@@ -89,9 +89,14 @@ class _VideoComponentState extends State<VideoComponent> {
   }
 
   Widget _buildVideoPlayer() {
-    return AspectRatio(
-      aspectRatio: widget.aspectRatio,
-      child: VideoPlayer(widget.controller),
+    return InteractiveViewer(
+      transformationController: _transformationController,
+      minScale: 0.5,
+      maxScale: 4.0,
+      child: AspectRatio(
+        aspectRatio: widget.aspectRatio,
+        child: VideoPlayer(widget.controller),
+      ),
     );
   }
 
@@ -130,12 +135,7 @@ class _VideoComponentState extends State<VideoComponent> {
                       child: CropSelectorComponent(
                         maxWidth: videoState.maxWidth,
                         maxHeight: videoState.maxHeight,
-                        child: (context) => InteractiveViewer(
-                          transformationController: _transformationController,
-                          minScale: 0.5,
-                          maxScale: 4.0,
-                          child: _buildVideoPlayer(),
-                        ),
+                        child: (context) => _buildVideoPlayer(),
                         readOnly: widget.readOnly,
                       ),
                     );
