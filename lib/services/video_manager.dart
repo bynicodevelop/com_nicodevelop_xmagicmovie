@@ -51,12 +51,12 @@ class VideoManager {
     final String videoPath = '${workingDir.path}/$projectId/$sourceFileName';
 
     // Si le fichier audio existe déjà, on ne le recrée pas
-    final String audioPath = fileManager.replaceFileExtension(videoPath, 'aac');
+    final String audioPath = fileManager.replaceFileExtension(videoPath, 'wav');
     final File audioFile = File(audioPath);
 
     if (audioFile.existsSync()) {
       debugPrint(
-          'Le fichier audio existe déjà. Chargement du fichier existant.');
+          'Le fichier audio WAV existe déjà. Chargement du fichier existant.');
       return;
     }
 
@@ -68,8 +68,9 @@ class VideoManager {
       throw Exception(message);
     }
 
+    // Commande FFmpeg pour extraire et convertir en WAV
     final String ffmpegCommand =
-        '-i "$videoPath" -vn -acodec copy -y "$audioPath"';
+        '-i "$videoPath" -vn -ar 44100 -ac 2 -b:a 192k -y "$audioPath"';
 
     try {
       final session = await FFmpegKit.executeAsync(ffmpegCommand);
@@ -77,12 +78,12 @@ class VideoManager {
 
       if (returnCode == null || !returnCode.isValueSuccess()) {
         final String? error = await session.getOutput();
-        throw Exception('Failed to extract audio: $error');
+        throw Exception('Échec de l\'extraction de l\'audio : $error');
       }
 
-      debugPrint("Audio extracted successfully. Output path: $audioPath");
+      debugPrint("Audio WAV extrait avec succès. Chemin : $audioPath");
     } catch (e) {
-      throw Exception('Error while extracting audio: $e');
+      throw Exception('Erreur lors de l\'extraction de l\'audio : $e');
     }
   }
 
