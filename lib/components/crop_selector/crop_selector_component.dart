@@ -75,8 +75,12 @@ class _CropSelectorComponentState extends State<CropSelectorComponent> {
                       width: 2,
                     ),
                     color: widget.readOnly
-                        ? Colors.grey.shade500.withOpacity(0.2)
-                        : Colors.red.withOpacity(0.2),
+                        ? Colors.grey.shade500.withValues(
+                            alpha: .2,
+                          )
+                        : Colors.red.withValues(
+                            alpha: .2,
+                          ),
                   ),
                   child: Hover(
                     builder: (context, isHover) {

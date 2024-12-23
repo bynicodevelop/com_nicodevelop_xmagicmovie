@@ -43,6 +43,49 @@ class VideoManager {
     );
   }
 
+  Future<void> extractAudio(
+    String projectId,
+    String sourceFileName,
+  ) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
+    final String videoPath = '${workingDir.path}/$projectId/$sourceFileName';
+
+    // Si le fichier audio existe déjà, on ne le recrée pas
+    final String audioPath = fileManager.replaceFileExtension(videoPath, 'aac');
+    final File audioFile = File(audioPath);
+
+    if (audioFile.existsSync()) {
+      debugPrint(
+          'Le fichier audio existe déjà. Chargement du fichier existant.');
+      return;
+    }
+
+    if (!File(videoPath).existsSync()) {
+      final String message =
+          'Erreur : Le fichier vidéo n\'existe pas à ce chemin : $videoPath';
+
+      debugPrint(message);
+      throw Exception(message);
+    }
+
+    final String ffmpegCommand =
+        '-i "$videoPath" -vn -acodec copy -y "$audioPath"';
+
+    try {
+      final session = await FFmpegKit.executeAsync(ffmpegCommand);
+      final returnCode = await session.getReturnCode();
+
+      if (returnCode == null || !returnCode.isValueSuccess()) {
+        final String? error = await session.getOutput();
+        throw Exception('Failed to extract audio: $error');
+      }
+
+      debugPrint("Audio extracted successfully. Output path: $audioPath");
+    } catch (e) {
+      throw Exception('Error while extracting audio: $e');
+    }
+  }
+
   Future<Uint8List?> extractThumbnail({
     required String projectId,
     required String sourceFileName,
@@ -121,8 +164,6 @@ class VideoManager {
     double zoomScale, // Zoom/dézoom de la vidéo
     void Function(int) onProgress,
   ) async {
-    print("zoomScale: $zoomScale");
-
     final Directory workingDir = await fileManager.getWorkingDirectory();
     final String inputPath = file.path;
     final double durationMs = await _getVideoDuration(inputPath);
@@ -139,7 +180,6 @@ class VideoManager {
 
     // Convertir zoomScale en facteur d'échelle pour le dézoom
     final double scaleFactor = 1 + (zoomScale / 100);
-    print("scaleFactor: $scaleFactor");
 
     // Calcul des dimensions après dézoom/zoom
     int scaledWidth = (stageSize.width * scaleFactor).round();
@@ -149,8 +189,6 @@ class VideoManager {
     scaledWidth = (scaledWidth / 2).floor() * 2;
     scaledHeight = (scaledHeight / 2).floor() * 2;
 
-    print("Scaled Width: $scaledWidth, Scaled Height: $scaledHeight");
-
     // Calcul du padding pour centrer la vidéo dézoomée dans le stage
     int offsetX = ((stageSize.width - scaledWidth) / 2).round();
     int offsetY = ((stageSize.height - scaledHeight) / 2).round();
@@ -158,8 +196,6 @@ class VideoManager {
     // Aligner les offsets sur des multiples de 2
     offsetX = (offsetX / 2).floor() * 2;
     offsetY = (offsetY / 2).floor() * 2;
-
-    print("OffsetX: $offsetX, OffsetY: $offsetY");
 
     // Recalculer les coordonnées du crop en fonction du padding et du facteur d'échelle
     int adjustedCropX = ((crop.cropX - offsetX) / scaleFactor)
@@ -181,17 +217,12 @@ class VideoManager {
     cropWidth = (cropWidth / 2).floor() * 2;
     cropHeight = (cropHeight / 2).floor() * 2;
 
-    print(
-        "Adjusted CropX: $adjustedCropX, CropY: $adjustedCropY, CropWidth: $cropWidth, CropHeight: $cropHeight");
-
     // Construction du filtre FFmpeg avec centrage explicite
     final String filter =
         'scale=$scaledWidth:$scaledHeight, pad=${stageSize.width}:${stageSize.height}:(ow-iw)/2:(oh-ih)/2, crop=$cropWidth:$cropHeight:$adjustedCropX:$adjustedCropY';
 
     final String ffmpegCommand =
         '-i "$inputPath" -filter_complex "$filter" -c:v libx264 -preset fast -c:a aac "$outputPath"';
-
-    print(ffmpegCommand);
 
     try {
       final completer = Completer<void>();

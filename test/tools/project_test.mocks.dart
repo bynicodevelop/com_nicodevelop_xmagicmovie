@@ -5,9 +5,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
 import 'dart:io' as _i2;
+import 'dart:typed_data' as _i12;
 
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart' as _i10;
-import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart' as _i12;
+import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart' as _i13;
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart' as _i4;
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart'
     as _i5;
@@ -285,10 +286,61 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
       ) as _i6.Future<_i4.SizeModel>);
 
   @override
+  _i6.Future<void> extractAudio(
+    String? projectId,
+    String? sourceFileName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #extractAudio,
+          [
+            projectId,
+            sourceFileName,
+          ],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<_i12.Uint8List?> extractThumbnail({
+    required String? projectId,
+    required String? sourceFileName,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #extractThumbnail,
+          [],
+          {
+            #projectId: projectId,
+            #sourceFileName: sourceFileName,
+          },
+        ),
+        returnValue: _i6.Future<_i12.Uint8List?>.value(),
+      ) as _i6.Future<_i12.Uint8List?>);
+
+  @override
+  _i6.Future<String?> getCoppedVideoPath(
+    String? projectId,
+    String? sourceFileName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCoppedVideoPath,
+          [
+            projectId,
+            sourceFileName,
+          ],
+        ),
+        returnValue: _i6.Future<String?>.value(),
+      ) as _i6.Future<String?>);
+
+  @override
   _i6.Future<String?> cropVideo(
     _i5.VideoDataModel? file,
-    _i4.SizeModel? videoSize,
-    _i12.CropModel? crop,
+    _i4.SizeModel? stageSize,
+    _i13.CropModel? crop,
+    double? zoomScale,
     void Function(int)? onProgress,
   ) =>
       (super.noSuchMethod(
@@ -296,8 +348,9 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
           #cropVideo,
           [
             file,
-            videoSize,
+            stageSize,
             crop,
+            zoomScale,
             onProgress,
           ],
         ),
