@@ -43,8 +43,7 @@ class Project {
 
     try {
       final videoDataModel = await videoManager.createVideoDataModel(
-        event.config.projectId,
-        event.config.sourceFileName,
+        event.config
       );
 
       emit(state.copyWith(

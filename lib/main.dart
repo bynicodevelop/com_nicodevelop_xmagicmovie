@@ -4,6 +4,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_new/button
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_open_file/bloc/open_file_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_transcription/bloc/transcription_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/bloc/loader_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/transcription_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/crop_tool.dart';
@@ -38,12 +40,15 @@ Future<void> main() async {
   final VideoManager videoManager = getIt.get<VideoManager>();
   final UploadService uplaodService = getIt.get<UploadService>();
   final ConfigService configService = getIt.get<ConfigService>();
+  final TranscriptionService transcriptionService =
+      getIt.get<TranscriptionService>();
 
   runApp(App(
     fileManager: fileManager,
     videoManager: videoManager,
     uplaodService: uplaodService,
     configService: configService,
+    transcriptionService: transcriptionService,
   ));
 }
 
@@ -52,12 +57,14 @@ class App extends StatelessWidget {
   final VideoManager videoManager;
   final UploadService uplaodService;
   final ConfigService configService;
+  final TranscriptionService transcriptionService;
 
   const App({
     required this.fileManager,
     required this.videoManager,
     required this.uplaodService,
     required this.configService,
+    required this.transcriptionService,
     super.key,
   });
 
@@ -159,6 +166,12 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => ExtractionAudioBloc(
               videoManager,
+            ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => TranscriptionBloc(
+              transcriptionService,
+              configService,
             ),
           ),
           RepositoryProvider<VideoManager>.value(

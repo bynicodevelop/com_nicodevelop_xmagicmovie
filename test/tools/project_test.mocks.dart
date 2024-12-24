@@ -303,6 +303,31 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
       ) as _i6.Future<void>);
 
   @override
+  _i6.Future<String> getAudioFilePath(
+    String? projectId,
+    String? sourceFileName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAudioFilePath,
+          [
+            projectId,
+            sourceFileName,
+          ],
+        ),
+        returnValue: _i6.Future<String>.value(_i8.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getAudioFilePath,
+            [
+              projectId,
+              sourceFileName,
+            ],
+          ),
+        )),
+      ) as _i6.Future<String>);
+
+  @override
   _i6.Future<_i12.Uint8List?> extractThumbnail({
     required String? projectId,
     required String? sourceFileName,
@@ -359,25 +384,17 @@ class MockVideoManager extends _i1.Mock implements _i11.VideoManager {
 
   @override
   _i6.Future<_i5.VideoDataModel> createVideoDataModel(
-    String? projectId,
-    String? sourceFileName,
-  ) =>
+          _i10.ConfigModel? configModel) =>
       (super.noSuchMethod(
         Invocation.method(
           #createVideoDataModel,
-          [
-            projectId,
-            sourceFileName,
-          ],
+          [configModel],
         ),
         returnValue: _i6.Future<_i5.VideoDataModel>.value(_FakeVideoDataModel_3(
           this,
           Invocation.method(
             #createVideoDataModel,
-            [
-              projectId,
-              sourceFileName,
-            ],
+            [configModel],
           ),
         )),
       ) as _i6.Future<_i5.VideoDataModel>);

@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/transcription_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:cross_file/cross_file.dart';
@@ -85,6 +87,16 @@ class VideoManager {
     } catch (e) {
       throw Exception('Erreur lors de l\'extraction de l\'audio : $e');
     }
+  }
+
+  Future<String> getAudioFilePath(
+    String projectId,
+    String sourceFileName,
+  ) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
+    final String audioPath = '${workingDir.path}/$projectId/$sourceFileName';
+
+    return fileManager.replaceFileExtension(audioPath, 'wav');
   }
 
   Future<Uint8List?> extractThumbnail({
@@ -276,16 +288,16 @@ class VideoManager {
   }
 
   Future<VideoDataModel> createVideoDataModel(
-    String projectId,
-    String sourceFileName,
+    ConfigModel configModel,
   ) async {
-    final String videoPath =
-        await fileManager.getFilePath(projectId, sourceFileName);
+    final String videoPath = await fileManager.getFilePath(
+        configModel.projectId, configModel.sourceFileName!);
 
     return _buildVideoDataModel(
-      projectId: projectId,
+      projectId: configModel.projectId,
       filePath: videoPath,
-      fileName: sourceFileName,
+      fileName: configModel.sourceFileName!,
+      transcription: configModel.transcription,
     );
   }
 
@@ -314,6 +326,7 @@ class VideoManager {
     required String projectId,
     required String filePath,
     required String fileName,
+    TranscriptionModel? transcription,
   }) async {
     final XFile videoFile = XFile(filePath);
     final SizeModel size = await getVideoSize(videoFile);
@@ -325,6 +338,7 @@ class VideoManager {
       uniqueFileName: fileName,
       xfile: videoFile,
       size: size,
+      transcription: transcription,
     );
   }
 }
