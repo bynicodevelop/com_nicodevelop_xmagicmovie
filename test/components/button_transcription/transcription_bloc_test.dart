@@ -1,9 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_transcription/bloc/transcription_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/transcription_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/transcription_service.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -45,7 +48,16 @@ void main() {
         when(mockConfigService.saveConfig(any)).thenAnswer((_) async => {});
         return transcriptionBloc;
       },
-      act: (bloc) => bloc.add(OnTranscriptionEvent(config: config)),
+      act: (bloc) => bloc.add(OnTranscriptionEvent(
+        videoDataModel: VideoDataModel(
+          projectId: config.projectId,
+          uniqueFileName: config.sourceFileName!,
+          name: config.sourceFileName!,
+          path: '',
+          xfile: XFile(''),
+          size: SizeModel(0, 0),
+        ),
+      )),
       expect: () => [
         TranscriptionLoading(),
         TranscriptionSuccess(),
@@ -65,7 +77,16 @@ void main() {
             .thenThrow(Exception('Transcription failed'));
         return transcriptionBloc;
       },
-      act: (bloc) => bloc.add(OnTranscriptionEvent(config: config)),
+      act: (bloc) => bloc.add(OnTranscriptionEvent(
+        videoDataModel: VideoDataModel(
+          projectId: config.projectId,
+          uniqueFileName: config.sourceFileName!,
+          name: config.sourceFileName!,
+          path: '',
+          xfile: XFile(''),
+          size: SizeModel(0, 0),
+        ),
+      )),
       expect: () => [
         TranscriptionLoading(),
         const TranscriptionFailure(message: 'Exception: Transcription failed'),
@@ -86,7 +107,16 @@ void main() {
             .thenThrow(Exception('Save config failed'));
         return transcriptionBloc;
       },
-      act: (bloc) => bloc.add(OnTranscriptionEvent(config: config)),
+      act: (bloc) => bloc.add(OnTranscriptionEvent(
+        videoDataModel: VideoDataModel(
+          projectId: config.projectId,
+          uniqueFileName: config.sourceFileName!,
+          name: config.sourceFileName!,
+          path: '',
+          xfile: XFile(''),
+          size: SizeModel(0, 0),
+        ),
+      )),
       expect: () => [
         TranscriptionLoading(),
         const TranscriptionFailure(message: 'Exception: Save config failed'),
