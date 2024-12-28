@@ -17,6 +17,23 @@ class TranscriptionRendererComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: kDefaultPadding,
+            vertical: kDefaultPadding * 2,
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: sentences.length,
+            itemBuilder: (context, index) {
+              final sentence = sentences[index];
+
+              return SentenceItemWidget(
+                sentence: sentence,
+              );
+            },
+          ),
+        ),
         Positioned(
           top: 0,
           right: 20,
@@ -31,19 +48,6 @@ class TranscriptionRendererComponent extends StatelessWidget {
             ),
           ),
         ),
-        SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: sentences.length,
-            itemBuilder: (context, index) {
-              final sentence = sentences[index];
-
-              return SentenceItemWidget(
-                sentence: sentence,
-              );
-            },
-          ),
-        )
       ],
     );
   }
