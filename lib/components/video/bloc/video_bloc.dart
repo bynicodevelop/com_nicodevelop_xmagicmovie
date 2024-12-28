@@ -33,7 +33,7 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     );
     await controller.initialize();
     emit(PlayerInitial(
-      event.videoDataModel,
+      state.videoData,
       controller,
       true,
       false,

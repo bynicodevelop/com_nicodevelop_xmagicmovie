@@ -72,9 +72,7 @@ class _LoaderModalState extends State<LoaderModal>
                 widget.builder(context),
                 if (state is LoaderInProgressState)
                   Container(
-                    color: Colors.white.withValues(
-                      alpha: .7,
-                    ),
+                    color: Colors.white.withOpacity(0.7),
                     child: Center(
                       child: SpinKitSpinningLines(
                         color: Theme.of(context).colorScheme.primary,

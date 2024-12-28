@@ -4,10 +4,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
-import 'dart:typed_data' as _i9;
 
-import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart' as _i11;
-import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart' as _i10;
+import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart' as _i8;
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart' as _i3;
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart'
     as _i4;
@@ -15,7 +13,6 @@ import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart' as _i2;
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart' as _i5;
 import 'package:cross_file/cross_file.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -95,86 +92,10 @@ class MockVideoManager extends _i1.Mock implements _i5.VideoManager {
       ) as _i6.Future<_i3.SizeModel>);
 
   @override
-  _i6.Future<void> extractAudio(
-    String? projectId,
-    String? sourceFileName,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #extractAudio,
-          [
-            projectId,
-            sourceFileName,
-          ],
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
-
-  @override
-  _i6.Future<String> getAudioFilePath(
-    String? projectId,
-    String? sourceFileName,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getAudioFilePath,
-          [
-            projectId,
-            sourceFileName,
-          ],
-        ),
-        returnValue: _i6.Future<String>.value(_i8.dummyValue<String>(
-          this,
-          Invocation.method(
-            #getAudioFilePath,
-            [
-              projectId,
-              sourceFileName,
-            ],
-          ),
-        )),
-      ) as _i6.Future<String>);
-
-  @override
-  _i6.Future<_i9.Uint8List?> extractThumbnail({
-    required String? projectId,
-    required String? sourceFileName,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #extractThumbnail,
-          [],
-          {
-            #projectId: projectId,
-            #sourceFileName: sourceFileName,
-          },
-        ),
-        returnValue: _i6.Future<_i9.Uint8List?>.value(),
-      ) as _i6.Future<_i9.Uint8List?>);
-
-  @override
-  _i6.Future<String?> getCoppedVideoPath(
-    String? projectId,
-    String? sourceFileName,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getCoppedVideoPath,
-          [
-            projectId,
-            sourceFileName,
-          ],
-        ),
-        returnValue: _i6.Future<String?>.value(),
-      ) as _i6.Future<String?>);
-
-  @override
   _i6.Future<String?> cropVideo(
     _i4.VideoDataModel? file,
-    _i3.SizeModel? stageSize,
-    _i10.CropModel? crop,
-    double? zoomScale,
+    _i3.SizeModel? videoSize,
+    _i8.CropModel? crop,
     void Function(int)? onProgress,
   ) =>
       (super.noSuchMethod(
@@ -182,9 +103,8 @@ class MockVideoManager extends _i1.Mock implements _i5.VideoManager {
           #cropVideo,
           [
             file,
-            stageSize,
+            videoSize,
             crop,
-            zoomScale,
             onProgress,
           ],
         ),
@@ -193,17 +113,25 @@ class MockVideoManager extends _i1.Mock implements _i5.VideoManager {
 
   @override
   _i6.Future<_i4.VideoDataModel> createVideoDataModel(
-          _i11.ConfigModel? configModel) =>
+    String? projectId,
+    String? sourceFileName,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #createVideoDataModel,
-          [configModel],
+          [
+            projectId,
+            sourceFileName,
+          ],
         ),
         returnValue: _i6.Future<_i4.VideoDataModel>.value(_FakeVideoDataModel_2(
           this,
           Invocation.method(
             #createVideoDataModel,
-            [configModel],
+            [
+              projectId,
+              sourceFileName,
+            ],
           ),
         )),
       ) as _i6.Future<_i4.VideoDataModel>);

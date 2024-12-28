@@ -51,11 +51,7 @@ void main() {
     expect(iconFinder, findsOneWidget);
 
     final iconWidget = tester.widget<Icon>(iconFinder);
-    expect(
-        iconWidget.color,
-        Colors.white.withValues(
-          alpha: .5,
-        ));
+    expect(iconWidget.color, Colors.white.withOpacity(0.5));
   });
 
   testWidgets(
