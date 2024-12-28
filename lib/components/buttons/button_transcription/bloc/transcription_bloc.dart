@@ -21,7 +21,9 @@ class TranscriptionBloc extends Bloc<TranscriptionEvent, TranscriptionState> {
       emit(TranscriptionLoading());
 
       if (event.videoDataModel.transcription != null) {
-        emit(TranscriptionAlreadyTranscribed());
+        emit(TranscriptionAlreadyTranscribed(
+          transcription: event.videoDataModel.transcription!,
+        ));
         return;
       }
 
@@ -38,7 +40,9 @@ class TranscriptionBloc extends Bloc<TranscriptionEvent, TranscriptionState> {
           'transcription': transcription.toJson(),
         }));
 
-        emit(TranscriptionSuccess());
+        emit(TranscriptionSuccess(
+          transcription: transcription,
+        ));
       } catch (e) {
         emit(TranscriptionFailure(
           message: e.toString(),

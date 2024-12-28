@@ -20,15 +20,6 @@ class Transcription {
         .toLowerCase(); // Convertit en minuscules
   }
 
-  List<SentenceModel> createSentences(
-    TranscriptionModel transcription,
-  ) {
-    final TranscriptionWithGroupedWordsModel groupedTranscription =
-        groupWords(transcription);
-
-    return createSentencesFromGroups(groupedTranscription);
-  }
-
   List<SentenceModel> createSentencesFromGroups(
     TranscriptionWithGroupedWordsModel transcription,
   ) {

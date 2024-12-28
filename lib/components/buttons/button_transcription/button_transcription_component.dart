@@ -1,6 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_transcription/bloc/transcription_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/transcription_renderer/bloc/transcription_renderer_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
@@ -86,21 +87,33 @@ class _ButtonTrascriptionComponentState
 
     return BlocListener<TranscriptionBloc, TranscriptionState>(
       listener: (context, state) {
-        if (state is TranscriptionSuccess) {
-          context.read<ModalBloc>().add(
-                const OnOpenModal(
-                  title: 'Transcription réussie 💪',
-                  message: 'La transcription a été effectuée avec succès.',
-                ),
-              );
-        }
+        if (state is TranscriptionSuccess ||
+            state is TranscriptionAlreadyTranscribed) {
+          final transcription = (state as dynamic).transcription;
 
-        if (state is TranscriptionAlreadyTranscribed) {
-          context.read<ViewManagerBloc>().add(
-                const ViewManagerEvent(
-                  kTranscriptionView,
+          // Action commune pour les deux états
+          context.read<TranscriptionRendererBloc>().add(
+                OnTranscriptionRendererInitial(
+                  transcriptionModel: transcription,
                 ),
               );
+
+          if (state is TranscriptionSuccess) {
+            // Action spécifique à TranscriptionSuccess
+            context.read<ModalBloc>().add(
+                  const OnOpenModal(
+                    title: 'Transcription réussie 💪',
+                    message: 'La transcription a été effectuée avec succès.',
+                  ),
+                );
+          } else if (state is TranscriptionAlreadyTranscribed) {
+            // Action spécifique à TranscriptionAlreadyTranscribed
+            context.read<ViewManagerBloc>().add(
+                  const ViewManagerEvent(
+                    kTranscriptionView,
+                  ),
+                );
+          }
         }
       },
       child: IconButton(

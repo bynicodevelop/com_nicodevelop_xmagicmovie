@@ -60,7 +60,9 @@ void main() {
       )),
       expect: () => [
         TranscriptionLoading(),
-        TranscriptionSuccess(),
+        TranscriptionSuccess(
+          transcription: transcription,
+        ),
       ],
       verify: (_) {
         verify(mockTranscriptionService.transcribeAudioToText(

@@ -1,6 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/list_projet_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/progress_bar/progress_bar_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/shared/run_status/run_status.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/transcription_renderer/bloc/transcription_renderer_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/transcription_renderer/transcription_renderer_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
@@ -9,6 +10,14 @@ import 'package:com_nicodevelop_xmagicmovie/components/zoom/zoom_component.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
+
+/// Enumération des états
+enum LoadingState {
+  idle,
+  loading,
+  loaded,
+  error,
+}
 
 /// Gestion des fichiers
 const String kWorkDir = 'XMagicMovieWorkspace';
@@ -104,5 +113,12 @@ Map<String, Widget> kListView = {
       );
     },
   ),
-  kTranscriptionView: TranscriptionRendererComponent(),
+  kTranscriptionView:
+      BlocBuilder<TranscriptionRendererBloc, TranscriptionRendererState>(
+    builder: (context, state) {
+      return TranscriptionRendererComponent(
+        sentences: state.sentences,
+      );
+    },
+  ),
 };

@@ -13,6 +13,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/
 import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/transcription_renderer/bloc/transcription_renderer_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
@@ -172,6 +173,11 @@ class App extends StatelessWidget {
             create: (BuildContext context) => TranscriptionBloc(
               transcriptionService,
               configService,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => TranscriptionRendererBloc(
+              transcriptionService,
             ),
           ),
           RepositoryProvider<VideoManager>.value(

@@ -11,9 +11,31 @@ final class TranscriptionInitial extends TranscriptionState {}
 
 final class TranscriptionLoading extends TranscriptionState {}
 
-final class TranscriptionSuccess extends TranscriptionState {}
+final class TranscriptionSuccess extends TranscriptionState {
+  final TranscriptionModel transcription;
 
-final class TranscriptionAlreadyTranscribed extends TranscriptionState {}
+  const TranscriptionSuccess({
+    required this.transcription,
+  });
+
+  @override
+  List<Object> get props => [
+        transcription,
+      ];
+}
+
+final class TranscriptionAlreadyTranscribed extends TranscriptionState {
+  final TranscriptionModel transcription;
+
+  const TranscriptionAlreadyTranscribed({
+    required this.transcription,
+  });
+
+  @override
+  List<Object> get props => [
+        transcription,
+      ];
+}
 
 final class TranscriptionFailure extends TranscriptionState {
   final String message;

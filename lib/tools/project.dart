@@ -1,4 +1,4 @@
-import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
@@ -42,9 +42,8 @@ class Project {
     var lastUpdated = DateTime.now();
 
     try {
-      final videoDataModel = await videoManager.createVideoDataModel(
-        event.config
-      );
+      final videoDataModel =
+          await videoManager.createVideoDataModel(event.config);
 
       emit(state.copyWith(
         videoDataModel: videoDataModel,
