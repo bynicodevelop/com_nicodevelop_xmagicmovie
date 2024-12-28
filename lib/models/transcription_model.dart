@@ -31,3 +31,15 @@ class TranscriptionModel extends Model {
         "language": language,
       };
 }
+
+class TranscriptionWithGroupedWordsModel extends TranscriptionModel {
+  final List<WordModel> groups;
+
+  TranscriptionWithGroupedWordsModel({
+    required super.text,
+    required super.words,
+    required super.duration,
+    required super.language,
+    required this.groups,
+  });
+}

@@ -23,4 +23,16 @@ class WordModel extends Model {
         "end": end,
         "word": word,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WordModel &&
+          runtimeType == other.runtimeType &&
+          word == other.word &&
+          start == other.start &&
+          end == other.end;
+
+  @override
+  int get hashCode => word.hashCode ^ start.hashCode ^ end.hashCode;
 }

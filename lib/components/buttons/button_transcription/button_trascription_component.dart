@@ -2,6 +2,8 @@ import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bl
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_transcription/bloc/transcription_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/modal_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,7 +96,11 @@ class _ButtonTrascriptionComponentState
         }
 
         if (state is TranscriptionAlreadyTranscribed) {
-          print("TranscriptionAlreadyTranscribed");
+          context.read<ViewManagerBloc>().add(
+                const ViewManagerEvent(
+                  kTranscriptionView,
+                ),
+              );
         }
       },
       child: IconButton(

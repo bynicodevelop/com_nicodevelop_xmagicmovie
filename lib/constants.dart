@@ -1,6 +1,7 @@
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/list_projet_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/progress_bar/progress_bar_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/shared/run_status/run_status.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/transcription_renderer/transcription_renderer_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/upload_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/video_component.dart';
@@ -15,6 +16,7 @@ const String kWorkDir = 'XMagicMovieWorkspace';
 /// Gestion des vues
 const String kUploadView = 'UploadView';
 const String kCropSelectorView = 'CropSelectorView';
+const String kTranscriptionView = 'TranscriptionView';
 
 const String kDefaultView = kUploadView;
 
@@ -102,4 +104,5 @@ Map<String, Widget> kListView = {
       );
     },
   ),
+  kTranscriptionView: TranscriptionRendererComponent(),
 };
