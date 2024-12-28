@@ -5,12 +5,8 @@ class ButtonCropComponent extends StatelessWidget {
   final bool active;
   final void Function()? onPressed;
 
-  const ButtonCropComponent({
-    this.readOnly = false,
-    this.active = false,
-    this.onPressed,
-    super.key,
-  });
+  const ButtonCropComponent(
+      {this.readOnly = false, this.active = false, this.onPressed, super.key});
 
   @override
   Widget build(BuildContext context) {

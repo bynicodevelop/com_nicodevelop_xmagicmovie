@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:com_nicodevelop_xmagicmovie/constants.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:equatable/equatable.dart';
 

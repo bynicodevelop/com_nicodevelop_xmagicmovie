@@ -23,19 +23,19 @@ void main() {
 
   test('runEvent emits RunInitialState and OnRunInProgress', () {
     final event = OnRunEvent(
-        VideoDataModel(
-          path: 'path/to/video',
-          size: SizeModel(1920, 1080),
-          name: 'video.mp4',
-          projectId: '12345',
-          uniqueFileName: '12345_video.mp4',
-          xfile: XFile('path/to/video'),
-        ),
-        SizeModel(1920, 1080),
-        SizeModel(1280, 720),
-        CropModel(cropX: 100, cropY: 100, cropWidth: 200, cropHeight: 200),
-        CropModel(cropX: 150, cropY: 150, cropWidth: 300, cropHeight: 300),
-        1);
+      VideoDataModel(
+        path: 'path/to/video',
+        size: SizeModel(1920, 1080),
+        name: 'video.mp4',
+        projectId: '12345',
+        uniqueFileName: '12345_video.mp4',
+        xfile: XFile('path/to/video'),
+      ),
+      SizeModel(1920, 1080),
+      SizeModel(1280, 720),
+      CropModel(cropX: 100, cropY: 100, cropWidth: 200, cropHeight: 200),
+      CropModel(cropX: 150, cropY: 150, cropWidth: 300, cropHeight: 300),
+    );
     final state = RunInitialState();
     final List<dynamic> emittedStates = [];
 
@@ -69,7 +69,6 @@ void main() {
       SizeModel(1280, 720),
       CropModel(cropX: 100, cropY: 100, cropWidth: 200, cropHeight: 200),
       CropModel(cropX: 150, cropY: 150, cropWidth: 300, cropHeight: 300),
-      1,
     );
     final state = RunInitialState();
     final List<dynamic> emittedStates = [];
@@ -78,7 +77,7 @@ void main() {
       emittedStates.add(newState);
     }
 
-    when(mockVideoManager.cropVideo(any, any, any, any, any))
+    when(mockVideoManager.cropVideo(any, any, any, any))
         .thenAnswer((_) async => 'path/to/cropped/video');
 
     await run.onRunInProgress(event, emit, state, (dynamic event) {
@@ -105,7 +104,6 @@ void main() {
       SizeModel(1280, 720),
       CropModel(cropX: 100, cropY: 100, cropWidth: 200, cropHeight: 200),
       CropModel(cropX: 150, cropY: 150, cropWidth: 300, cropHeight: 300),
-      1,
       'path/to/cropped/video',
     );
     final List<dynamic> emittedStates = [];
@@ -122,12 +120,12 @@ void main() {
 
   test('onReset emits RunInitialState', () {
     final event = OnResetEvent(
-        VideoDataModel.empty(),
-        SizeModel(0, 0),
-        SizeModel(0, 0),
-        CropModel(cropX: 0, cropY: 0, cropWidth: 0, cropHeight: 0),
-        CropModel(cropX: 0, cropY: 0, cropWidth: 0, cropHeight: 0),
-        1);
+      VideoDataModel.empty(),
+      SizeModel(0, 0),
+      SizeModel(0, 0),
+      CropModel(cropX: 0, cropY: 0, cropWidth: 0, cropHeight: 0),
+      CropModel(cropX: 0, cropY: 0, cropWidth: 0, cropHeight: 0),
+    );
     final List<dynamic> emittedStates = [];
 
     void emit(dynamic newState) {
