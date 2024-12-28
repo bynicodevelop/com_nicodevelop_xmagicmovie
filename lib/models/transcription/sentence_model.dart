@@ -8,6 +8,12 @@ class SentenceModel extends Model {
     required this.words,
   });
 
+  double get startTime => words.first.start;
+
+  double get endTime => words.last.end;
+
+  double get duration => endTime - startTime;
+
   @override
   Map<String, dynamic> toJson() => {
         'words': words.map((word) => word.toJson()).toList(),
