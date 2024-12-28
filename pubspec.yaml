@@ -50,6 +50,8 @@ dependencies:
   ffmpeg_kit_flutter_min_gpl: ^6.0.3
   video_thumbnail: ^0.5.3
   skeletonizer: ^1.4.2
+  dart_openai: ^5.1.0
+  unorm_dart: ^0.3.0
 
 dev_dependencies:
   flutter_test:

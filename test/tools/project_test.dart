@@ -4,13 +4,13 @@ import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/project.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
-import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'project_test.mocks.dart';
 import 'package:cross_file/cross_file.dart';
+import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 
 class MockEvent {
   final MockConfig config;

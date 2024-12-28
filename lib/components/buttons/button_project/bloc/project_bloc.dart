@@ -22,10 +22,11 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             uniqueFileName: '',
             xfile: XFile(''),
             size: SizeModel(0, 0),
+            transcription: null,
           ),
           DateTime.now(),
         )) {
-    on<ProjectEvent>(
+    on<LoadProject>(
       (event, emit) async => project.loadProject(event, emit, state),
     );
   }

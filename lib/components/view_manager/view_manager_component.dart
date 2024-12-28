@@ -1,3 +1,4 @@
+import 'package:com_nicodevelop_xmagicmovie/blocs/extraction_audio/extraction_audio_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_b
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
@@ -50,6 +52,7 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
                       SizeModel(0, 0),
                       CropModel.empty(),
                       null,
+                      0,
                     ),
                   );
 
@@ -60,6 +63,17 @@ class _ViewManagerComponentState extends State<ViewManagerComponent> {
               context.read<ViewManagerBloc>().add(
                     const ViewManagerEvent(
                       kCropSelectorView,
+                    ),
+                  );
+
+              context.read<ExtractionAudioBloc>().add(
+                    OnExtractionAudioEvent(
+                      config: ConfigModel.fromJson(
+                        {
+                          ...state.videoData!.toJson(),
+                          'sourceFileName': state.videoData!.uniqueFileName,
+                        },
+                      ),
                     ),
                   );
 
