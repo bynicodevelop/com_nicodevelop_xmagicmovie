@@ -61,6 +61,7 @@ class Run {
       event.videoSize,
       event.crop,
       finalCrop,
+      event.zoomScale,
     ));
   }
 
@@ -76,6 +77,7 @@ class Run {
         event.file,
         event.fileSize,
         event.finalCrop,
+        event.zoomScale,
         (progress) => emit(RunProgressUpdate(
           progress: progress,
         )),
@@ -91,6 +93,7 @@ class Run {
         event.videoSize,
         event.crop,
         event.finalCrop,
+        event.zoomScale,
         finalPath!,
       ));
     } catch (e) {

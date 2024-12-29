@@ -1,8 +1,10 @@
+import 'package:com_nicodevelop_xmagicmovie/blocs/extraction_audio/extraction_audio_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_delete_project/bloc/project_delete_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_new/button_new_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_open_file/bloc/open_file_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_project/bloc/project_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/bloc/run_bloc.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_transcription/bloc/transcription_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/crop_selector/bloc/crop_selector_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/list_projet/bloc/projects_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/modals/loader/bloc/loader_bloc.dart';
@@ -11,14 +13,17 @@ import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/bloc/
 import 'package:com_nicodevelop_xmagicmovie/components/modals/notification/notification_modal.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/bloc/tool_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/tools/tool_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/transcription_renderer/bloc/transcription_renderer_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/upload_file/bloc/upload_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/video/bloc/video_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/bloc/view_manager_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/view_manager/view_manager_component.dart';
+import 'package:com_nicodevelop_xmagicmovie/components/zoom/bloc/zoom_bloc.dart';
 import 'package:com_nicodevelop_xmagicmovie/constants.dart';
 import 'package:com_nicodevelop_xmagicmovie/injector.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/config_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
+import 'package:com_nicodevelop_xmagicmovie/services/transcription_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/uplaod_service.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/video_manager.dart';
 import 'package:com_nicodevelop_xmagicmovie/tools/crop_tool.dart';
@@ -36,12 +41,15 @@ Future<void> main() async {
   final VideoManager videoManager = getIt.get<VideoManager>();
   final UploadService uplaodService = getIt.get<UploadService>();
   final ConfigService configService = getIt.get<ConfigService>();
+  final TranscriptionService transcriptionService =
+      getIt.get<TranscriptionService>();
 
   runApp(App(
     fileManager: fileManager,
     videoManager: videoManager,
     uplaodService: uplaodService,
     configService: configService,
+    transcriptionService: transcriptionService,
   ));
 }
 
@@ -50,12 +58,14 @@ class App extends StatelessWidget {
   final VideoManager videoManager;
   final UploadService uplaodService;
   final ConfigService configService;
+  final TranscriptionService transcriptionService;
 
   const App({
     required this.fileManager,
     required this.videoManager,
     required this.uplaodService,
     required this.configService,
+    required this.transcriptionService,
     super.key,
   });
 
@@ -149,6 +159,25 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => OpenFileBloc(
               videoManager: videoManager,
+            ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ZoomBloc(),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ExtractionAudioBloc(
+              videoManager,
+            ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => TranscriptionBloc(
+              transcriptionService,
+              configService,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => TranscriptionRendererBloc(
+              transcriptionService,
             ),
           ),
           RepositoryProvider<VideoManager>.value(

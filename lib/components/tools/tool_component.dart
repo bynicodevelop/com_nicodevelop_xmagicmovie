@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_transcription/button_transcription_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/widgets/buttons/button_crop_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_open_file/button_open_file_component.dart';
 import 'package:com_nicodevelop_xmagicmovie/components/buttons/button_run/button_run_component.dart';
@@ -28,6 +29,9 @@ class ToolComponent extends StatelessWidget {
               children: [
                 ButtonOpenFileComponent(
                   onPressed: (String link) => Process.run('open', [link]),
+                ),
+                ButtonTrascriptionComponent(
+                  readOnly: isDisabled,
                 ),
                 ButtonCropComponent(
                   readOnly: isDisabled,

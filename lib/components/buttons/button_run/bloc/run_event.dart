@@ -6,6 +6,7 @@ class RunEvent extends Equatable {
   final SizeModel videoSize;
   final CropModel crop;
   final CropModel? finalCrop;
+  final double zoomScale;
 
   const RunEvent(
     this.file,
@@ -13,6 +14,7 @@ class RunEvent extends Equatable {
     this.videoSize,
     this.crop,
     this.finalCrop,
+    this.zoomScale,
   );
 
   @override
@@ -21,6 +23,7 @@ class RunEvent extends Equatable {
         fileSize,
         videoSize,
         crop,
+        zoomScale,
       ];
 }
 
@@ -31,6 +34,7 @@ class OnRunEvent extends RunEvent {
     super.videoSize,
     super.crop,
     super.finalCrop,
+    super.zoomScale,
   );
 }
 
@@ -41,6 +45,7 @@ class OnRunInProgress extends RunEvent {
     super.videoSize,
     super.crop,
     super.finalCrop,
+    super.zoomScale,
   );
 }
 
@@ -53,6 +58,7 @@ class OnRunSuccess extends RunEvent {
     super.videoSize,
     super.crop,
     super.finalCrop,
+    super.zoomScale,
     this.finalPath,
   );
 
@@ -62,6 +68,7 @@ class OnRunSuccess extends RunEvent {
         fileSize,
         videoSize,
         crop,
+        zoomScale,
         finalPath,
       ];
 }
@@ -72,6 +79,7 @@ class OnResetEvent extends RunEvent {
     super.fileSize,
     super.videoSize,
     super.crop,
+    super.zoomScale,
     super.finalCrop,
   );
 }

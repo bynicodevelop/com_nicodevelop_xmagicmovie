@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:com_nicodevelop_xmagicmovie/models/config_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/crop_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/size_model.dart';
+import 'package:com_nicodevelop_xmagicmovie/models/transcription_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/models/video_data_model.dart';
 import 'package:com_nicodevelop_xmagicmovie/services/file_manager.dart';
 import 'package:cross_file/cross_file.dart';
@@ -41,6 +43,60 @@ class VideoManager {
       width.toDouble(),
       height.toDouble(),
     );
+  }
+
+  Future<void> extractAudio(
+    String projectId,
+    String sourceFileName,
+  ) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
+    final String videoPath = '${workingDir.path}/$projectId/$sourceFileName';
+
+    // Si le fichier audio existe déjà, on ne le recrée pas
+    final String audioPath = fileManager.replaceFileExtension(videoPath, 'wav');
+    final File audioFile = File(audioPath);
+
+    if (audioFile.existsSync()) {
+      debugPrint(
+          'Le fichier audio WAV existe déjà. Chargement du fichier existant.');
+      return;
+    }
+
+    if (!File(videoPath).existsSync()) {
+      final String message =
+          'Erreur : Le fichier vidéo n\'existe pas à ce chemin : $videoPath';
+
+      debugPrint(message);
+      throw Exception(message);
+    }
+
+    // Commande FFmpeg pour extraire et convertir en WAV
+    final String ffmpegCommand =
+        '-i "$videoPath" -vn -ar 44100 -ac 2 -b:a 192k -y "$audioPath"';
+
+    try {
+      final session = await FFmpegKit.executeAsync(ffmpegCommand);
+      final returnCode = await session.getReturnCode();
+
+      if (returnCode == null || !returnCode.isValueSuccess()) {
+        final String? error = await session.getOutput();
+        throw Exception('Échec de l\'extraction de l\'audio : $error');
+      }
+
+      debugPrint("Audio WAV extrait avec succès. Chemin : $audioPath");
+    } catch (e) {
+      throw Exception('Erreur lors de l\'extraction de l\'audio : $e');
+    }
+  }
+
+  Future<String> getAudioFilePath(
+    String projectId,
+    String sourceFileName,
+  ) async {
+    final Directory workingDir = await fileManager.getWorkingDirectory();
+    final String audioPath = '${workingDir.path}/$projectId/$sourceFileName';
+
+    return fileManager.replaceFileExtension(audioPath, 'wav');
   }
 
   Future<Uint8List?> extractThumbnail({
@@ -116,8 +172,9 @@ class VideoManager {
 
   Future<String?> cropVideo(
     VideoDataModel file,
-    SizeModel videoSize,
-    CropModel crop,
+    SizeModel stageSize, // Taille du stage (zone visible)
+    CropModel crop, // Coordonnées de crop relatives au stage
+    double zoomScale, // Zoom/dézoom de la vidéo
     void Function(int) onProgress,
   ) async {
     final Directory workingDir = await fileManager.getWorkingDirectory();
@@ -125,16 +182,60 @@ class VideoManager {
     final double durationMs = await _getVideoDuration(inputPath);
 
     final String outputPath = fileManager.replaceFileExtension(
-        '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}',
-        'mp4');
+      '${workingDir.path}/${file.projectId}/cropped_${file.uniqueFileName}',
+      'mp4',
+    );
 
     final File fileExists = File(outputPath);
     if (fileExists.existsSync()) {
       fileExists.deleteSync();
     }
 
+    // Convertir zoomScale en facteur d'échelle pour le dézoom
+    final double scaleFactor = 1 + (zoomScale / 100);
+
+    // Calcul des dimensions après dézoom/zoom
+    int scaledWidth = (stageSize.width * scaleFactor).round();
+    int scaledHeight = (stageSize.height * scaleFactor).round();
+
+    // Aligner sur des multiples de 2 pour éviter les problèmes avec FFmpeg
+    scaledWidth = (scaledWidth / 2).floor() * 2;
+    scaledHeight = (scaledHeight / 2).floor() * 2;
+
+    // Calcul du padding pour centrer la vidéo dézoomée dans le stage
+    int offsetX = ((stageSize.width - scaledWidth) / 2).round();
+    int offsetY = ((stageSize.height - scaledHeight) / 2).round();
+
+    // Aligner les offsets sur des multiples de 2
+    offsetX = (offsetX / 2).floor() * 2;
+    offsetY = (offsetY / 2).floor() * 2;
+
+    // Recalculer les coordonnées du crop en fonction du padding et du facteur d'échelle
+    int adjustedCropX = ((crop.cropX - offsetX) / scaleFactor)
+        .clamp(0, scaledWidth - 1)
+        .round();
+    int adjustedCropY = ((crop.cropY - offsetY) / scaleFactor)
+        .clamp(0, scaledHeight - 1)
+        .round();
+
+    // Les dimensions du crop doivent également être adaptées au facteur d'échelle
+    int cropWidth = (crop.cropWidth / scaleFactor)
+        .clamp(1, scaledWidth - adjustedCropX)
+        .round();
+    int cropHeight = (crop.cropHeight / scaleFactor)
+        .clamp(1, scaledHeight - adjustedCropY)
+        .round();
+
+    // Aligner les dimensions du crop sur des multiples de 2
+    cropWidth = (cropWidth / 2).floor() * 2;
+    cropHeight = (cropHeight / 2).floor() * 2;
+
+    // Construction du filtre FFmpeg avec centrage explicite
+    final String filter =
+        'scale=$scaledWidth:$scaledHeight, pad=${stageSize.width}:${stageSize.height}:(ow-iw)/2:(oh-ih)/2, crop=$cropWidth:$cropHeight:$adjustedCropX:$adjustedCropY';
+
     final String ffmpegCommand =
-        '-i "$inputPath" -filter:v "crop=${crop.cropWidth}:${crop.cropHeight}:${crop.cropX}:${crop.cropY}" -c:v libx264 -preset fast -c:a aac "$outputPath"';
+        '-i "$inputPath" -filter_complex "$filter" -c:v libx264 -preset fast -c:a aac "$outputPath"';
 
     try {
       final completer = Completer<void>();
@@ -187,16 +288,16 @@ class VideoManager {
   }
 
   Future<VideoDataModel> createVideoDataModel(
-    String projectId,
-    String sourceFileName,
+    ConfigModel configModel,
   ) async {
-    final String videoPath =
-        await fileManager.getFilePath(projectId, sourceFileName);
+    final String videoPath = await fileManager.getFilePath(
+        configModel.projectId, configModel.sourceFileName!);
 
     return _buildVideoDataModel(
-      projectId: projectId,
+      projectId: configModel.projectId,
       filePath: videoPath,
-      fileName: sourceFileName,
+      fileName: configModel.sourceFileName!,
+      transcription: configModel.transcription,
     );
   }
 
@@ -225,6 +326,7 @@ class VideoManager {
     required String projectId,
     required String filePath,
     required String fileName,
+    TranscriptionModel? transcription,
   }) async {
     final XFile videoFile = XFile(filePath);
     final SizeModel size = await getVideoSize(videoFile);
@@ -236,6 +338,7 @@ class VideoManager {
       uniqueFileName: fileName,
       xfile: videoFile,
       size: size,
+      transcription: transcription,
     );
   }
 }

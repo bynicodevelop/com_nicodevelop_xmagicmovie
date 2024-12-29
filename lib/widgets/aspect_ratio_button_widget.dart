@@ -23,7 +23,9 @@ class AspectRationButtonWidget extends StatelessWidget {
         icon,
         color: state.lockedAspectRatio != aspectRatio
             ? Colors.white
-            : Colors.white.withOpacity(0.5),
+            : Colors.white.withValues(
+                alpha: .5,
+              ),
       ),
     );
   }
